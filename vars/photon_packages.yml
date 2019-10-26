@@ -1,4 +1,4 @@
-- vars:
+---
   - photon_packages:
     - vim
     - vim-tools
