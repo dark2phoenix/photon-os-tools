@@ -1,5 +1,10 @@
 ---
 photon_packages:
+  - bindutils
+  - sudo
+  - openssl-c_rehash
   - vim
-  - vim-tools
-  - python3
+  - nfs-utils
+  - vim-extra
+  - ansible
+  - pip
