@@ -7,4 +7,4 @@ photon_packages:
   - nfs-utils
   - vim-extra
   - ansible
-  - pip
+  - python-pip
