@@ -1,7 +1,6 @@
 ---
 
 - name: Configure Photon
-  conection: network_cli
   gather_facts: false
   hosts: all
   tasks:
