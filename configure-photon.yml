@@ -7,7 +7,9 @@
 
     - name: Process variables
       include_vars:
-        dir: vars/all    
+        dir: vars/all
+        extensions:
+          - yml   
 
     # in ansible 2.1 this will work
     - name: ensure yum is installed
