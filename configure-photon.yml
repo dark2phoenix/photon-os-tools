@@ -17,7 +17,7 @@
       command: tdnf -y distro-sync
 
     - name: Add additional packages
-      yum: name={{ item }} state=present
+      command: tdnf install -y {{ item }}
       with_items: "{{ photon_packages }}"
 
  
