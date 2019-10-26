@@ -3,9 +3,9 @@
 - name: Configure Photon
   gather_facts: true
   hosts: localhost
-  tasks:
-
-    - name: Install all packages
-      package:
-        name: vim-extras
-        state: latest
+  photon_packages:
+      - git
+      - gzip
+      - less
+      - python-setuptools
+      - tar    
