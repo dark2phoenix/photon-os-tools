@@ -1,11 +1,11 @@
 ---
 
 - name: Configure Photon
-  gather_facts: false
+  gather_facts: true
   hosts: localhost
   tasks:
 
     - name: Install all packages
       dnf:
         name: vim-extras
-        state: present
+        state: latest
