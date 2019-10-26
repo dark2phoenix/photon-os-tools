@@ -1,6 +1,13 @@
 ---
 
 # in ansible 2.1 this will work
+- name: Add photon repository
+  yum_repository:
+   name: photon repo
+   description: photon repo
+   baseurl: "{{ photon_yum_repo }}"
+   enabled: "{{ photon_yum_repo_enabled }}"
+
 - name: ensure yum is installed
   command: bash -c "rpm -q yum || tdnf install -y yum" creates=/usr/bin/yum
 
@@ -10,3 +17,6 @@
 - name: add additional packages
   yum: name={{ item }} state=present
   with_items: "{{ photon_packages }}"
+
+- name: update systemd to fix network daemon crashes
+  yum: name=systemd state=present
