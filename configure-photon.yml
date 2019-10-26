@@ -18,8 +18,5 @@
       command: tdnf -y makecache
 
     - name: Add additional packages
-      command: tdnf install -y {{ item }}
+      shell: tdnf info installed | grep  \"Name\s*:\s*{{ item }}$"^ || tdnf install -y {{ item }}
       with_items: "{{ photon_packages }}"
-      when: tdnf info installed | grep  \"Name\s*:\s*{{ item }}$\"^C
-
- 
