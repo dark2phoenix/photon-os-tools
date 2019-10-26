@@ -20,6 +20,6 @@
     - name: Add additional packages
       command: "tdnf info installed | grep -q \"Name\\s*:\\s*{{ item }}$\" echo true || | tdnf install -y {{ item }} | echo false"
       register: is_installed
-      changed_when: is_installed
+      changed_when: is_installed|bool
       with_items: "{{ photon_packages }}"
       
