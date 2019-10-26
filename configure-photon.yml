@@ -6,6 +6,6 @@
   tasks:
 
     - name: Install all packages
-      package:
+      tdnf:
         name: vim-extras
         state: present
