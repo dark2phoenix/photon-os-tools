@@ -7,7 +7,7 @@
 
     - name: Process variables
       include_vars:
-        dir: vars/all
+        dir: vars
         extensions:
           - yml   
 
