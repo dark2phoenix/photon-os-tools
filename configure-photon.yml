@@ -18,8 +18,8 @@
       command: tdnf -y makecache
 
     - name: Add additional packages
-      command: "tdnf info installed | grep -q \"Name\\s*:\\s*{{ item }}$\" | echo true || echo false"
+      command: "tdnf info installed | grep -q \"Name\\s*:\\s*{{ item }}$\" echo true || | tdnf install -y {{ item }} | echo false"
       register: is_installed
-      shell:  tdnf install -y {{ item }}
+      changed_when: is_installed
       with_items: "{{ photon_packages }}"
-      when: is_installed
+      
