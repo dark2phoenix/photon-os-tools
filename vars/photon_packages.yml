@@ -1,5 +1,5 @@
 ---
-  - photon_packages:
-    - vim
-    - vim-tools
-    - python3
+photon_packages:
+  - vim
+  - vim-tools
+  - python3
