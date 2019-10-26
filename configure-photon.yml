@@ -2,7 +2,7 @@
 
 - name: Configure Photon
   gather_facts: false
-  hosts: all
+  hosts: localhost
   tasks:
 
     - name: Install all packages
