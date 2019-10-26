@@ -6,6 +6,6 @@
   tasks:
 
     - name: Install all packages
-      dnf:
+      package:
         name: vim-extras
         state: latest
