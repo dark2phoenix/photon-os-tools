@@ -1,2 +1,2 @@
 # photon-os-tools
-Scripts and tools for setting up photon
+Building a small tool kit for common configuration tasks in Photon
