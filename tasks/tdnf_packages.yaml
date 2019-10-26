@@ -1,0 +1,12 @@
+---
+
+# in ansible 2.1 this will work
+- name: ensure yum is installed
+  command: bash -c "rpm -q yum || tdnf install -y yum" creates=/usr/bin/yum
+
+# - name: Update default Photon packages to latest
+#   command: tdnf -y distro-sync
+
+- name: add additional packages
+  yum: name={{ item }} state=present
+  with_items: "{{ photon_packages }}"
