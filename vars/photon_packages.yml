@@ -1,4 +1,5 @@
-- photon_packages:
-  - vim
-  - vim-tools
-  - python3
+- vars:
+  - photon_packages:
+    - vim
+    - vim-tools
+    - python3
