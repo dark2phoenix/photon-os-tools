@@ -24,7 +24,7 @@
       register: is_installed
       changed_when: is_installed.stdout|bool
       with_items: "{{ tdnf.packages }}"
-      when: tdnf.pcackages|length > 0
+      when: tdnf.packages|length > 0
     
 
       
