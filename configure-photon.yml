@@ -24,9 +24,7 @@
       with_items: "{{ photon_packages }}"
     
     - debug:
-        var: is_installed
-        verbosity: 4
-        msg: "{{is_installed}}"
+        msg: "is_installed: {{is_installed}}"
     
 
       
