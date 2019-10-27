@@ -1,5 +1,8 @@
 ---
-photon_packages:
+tdnf:
+  makecache: true
+  distro-sync: true
+  packages:
   - bindutils
   - sudo
   - openssl-c_rehash
