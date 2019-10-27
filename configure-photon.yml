@@ -19,8 +19,8 @@
 
     - name: Add additional packages
       shell: "[[ $(tdnf info installed | grep -q \"Name\\s*:\\s*{{ item }}$\"; echo $?) == 0 ]] && echo 0 || (tdnf install -y {{ item }} && echo 1)"
-      register: is_installed
-      changed_when: is_installed|bool
+      register: is_installed|bool
+      changed_when: is_installed
       with_items: "{{ photon_packages }}"
     
 
