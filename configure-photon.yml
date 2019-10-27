@@ -11,16 +11,16 @@
         extensions:
           - yml   
 
-    - name: Update default Photon packages to latest
-      command: tdnf -y distro-sync
+    #- name: Update default Photon packages to latest
+    #  command: tdnf -y distro-sync
 
-    - name: Make a tdnf cache
-      command: tdnf -y makecache
+    #- name: Make a tdnf cache
+    #  command: tdnf -y makecache
 
     - name: Add additional packages
       shell: "[[ $(tdnf info installed | grep -q \"Name\\s*:\\s*{{ item }}$\"; echo $?) == 0 ]] && echo false || (tdnf install -y {{ item }} && echo true)"
-      register: is_installed.stdout 
-      changed_when: is_installed|bool
+      register: is_installed
+      changed_when: is_installed.stdout|bool
       with_items: "{{ photon_packages }}"
     
 
