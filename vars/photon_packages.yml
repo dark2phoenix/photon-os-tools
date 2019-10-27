@@ -5,6 +5,6 @@ photon_packages:
   - openssl-c_rehash
   - vim
   - nfs-utils
-  - vim-extra
   - ansible
   - python-pip
+  - vim-extra
