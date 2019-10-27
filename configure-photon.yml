@@ -13,7 +13,7 @@
 
     - name: Update default Photon packages to latest
       command: tdnf -y distro-sync
-      when: tdnf.distro-sync
+      when: tdnf.distrosync
 
     - name: Make a tdnf cache
       command: tdnf -y makecache
