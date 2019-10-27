@@ -26,6 +26,7 @@
     - debug:
         var: is_installed
         verbosity: 4
+        msg: "{{is_installed}}"
     
 
       
