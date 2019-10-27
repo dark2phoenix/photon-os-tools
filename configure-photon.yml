@@ -1,8 +1,8 @@
 ---
 - hosts: localhost
   tasks:
-    name: Configure Photon
-    gather_facts: true
+    - name: Configure Photon
+      gather_facts: true
 #
 # Ensure operation only on Photon hosts
 #
