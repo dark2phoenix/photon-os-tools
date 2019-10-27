@@ -1,7 +1,7 @@
 ---
 tdnf:
-  makecache: true
-  distrosync: true
+  makecache: false
+  distrosync: false
   packages:
   - bindutils
   - sudo
