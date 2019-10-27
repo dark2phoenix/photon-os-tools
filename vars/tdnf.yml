@@ -3,3 +3,11 @@ tdnf:
   makecache: false
   distrosync: false
   packages:
+  - bindutils
+  - sudo
+  - openssl-c_rehash
+  - vim
+  - nfs-utils
+  - ansible
+  - python-pip
+  - vim-extra
