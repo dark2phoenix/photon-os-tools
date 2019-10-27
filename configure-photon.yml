@@ -1,10 +1,8 @@
 ---
-- name: Configure Photon
-      gather_facts: true
 #
 # Ensure operation only on Photon hosts
 #
-- name: Skipping non photons
+- name: Skipping Non-Photon machine (group 'photons')
   hosts: all:localhost
   debug:
     msg: "Skipping non photon hosts"
