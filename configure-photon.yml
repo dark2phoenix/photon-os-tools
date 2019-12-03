@@ -1,16 +1,33 @@
 ---
-#
-# Ensure operation only on Photon hosts
-#
-- name: Skipping Non-Photon machine (group 'photons')
-  hosts: all:localhost
-  debug:
-    msg: "Skipping non photon hosts"
-  when: ansible_distribution != 'VMware Photon'
-#
-# Package Management
-#
-- include: yum.yml
-  when: ansible_distribution == 'VMware Photon'
-- include: pip.yml
-  when: ansible_distribution == 'VMware Photon'
+- hosts: all:localhost:photon
+  become_user: root
+  vars:
+    logstash_server: '172.28.7.111'
+    logstash_port: 514
+    tdnf:
+      makecache: false
+      distrosync: false
+      packages:
+      - bindutils
+      - sudo
+      - openssl-c_rehash
+      - vim
+      - nfs-utils
+      - ansible
+      - python-pip
+      - vim-extra
+      - iputils
+  
+  tasks:
+    #
+    # Ensure operation only on Photon hosts
+    #
+    - name: Skipping Non-Photon machine (group 'photons')
+      debug:
+        msg: "Skipping non photon host {{ ansible_distribution }}"
+      when: ansible_distribution != 'VMware Photon OS'
+    
+    - name: Configure Role 'Photon'
+      include_role: 
+        name: photon
+        
