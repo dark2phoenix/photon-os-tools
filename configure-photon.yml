@@ -4,7 +4,7 @@
   vars:
     logstash_server: "172.28.7.111"
     logstash_port: 514
-    tdnf:
+    tdnf-config:
       makecache: true
       distrosync: true
       packages:
