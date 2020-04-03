@@ -3,16 +3,6 @@
 # SPDX-License-Identifier: Apache-2.0 OR GPL-3.0-only
 #
 ---
-# This doesn't work yet because python wants to use dnf and photon use tdnf
-
-#
-# Let the user know this is currently non-functional
-#
-- name: yum configuration is currently disabled
-  debug:
-    msg: "The yum comfiguration is currently disabled.  Use tdnf tasks for now"
-
-
 # in ansible 2.1 this will work
 #- name: Add photon repository
 #  yum_repository:
@@ -26,7 +16,11 @@
   command: bash -c "rpm -q yum || tdnf install -y yum" creates=/usr/bin/yum
 
 - name: add additional packages
-  yum: name={{ photon_packages }} state=present
+  yum: 
+    name: {{ photon_packages }}
+    state: present
 
 - name: update systemd to fix network daemon crashes
-  yum: name=systemd state=present
+  yum: 
+    name: systemd 
+    state: present
