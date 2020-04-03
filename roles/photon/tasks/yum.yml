@@ -11,10 +11,10 @@
 #   baseurl: "{{ photon_yum_repo }}"
 #   enabled: "{{ photon_yum_repo_enabled }}"
 
-#- name: ensure yum is installed
-#  command:
-#    cmd: bash -c "rpm -q yum || tdnf install -y yum"
-#    creates: /usr/bin/yum
+- name: ensure yum is installed
+  command:
+    cmd: bash -c "rpm -q yum || tdnf install -y yum"
+    creates: /usr/bin/yum
 
 #- name: upgrade all packages
 #  yum:
@@ -28,8 +28,8 @@
 #    state: latest
 #    update_cache: true
 
-- name: update systemd to fix network daemon crashes
-  yum:
-   name: systemd
-    state: present
-    update_cache: true
+#- name: update systemd to fix network daemon crashes
+#  yum:
+#   name: systemd
+#    state: present
+#    update_cache: true
