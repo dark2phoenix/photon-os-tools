@@ -1,0 +1,39 @@
+#
+# Copyright 2015 VMware, Inc.  All rights reserved.
+# SPDX-License-Identifier: Apache-2.0 OR GPL-3.0-only
+#
+
+# prevent doing things that will break under docker.
+# specifically added so that travis-ci can test inside docker
+photon_testing_in_docker: false
+
+photon_with_docker: true
+# docker group id (gets created) for socket access and similar
+docker_gid: 995
+
+# docker insecure registies
+docker_insecure_registries: []
+
+#
+# set these 2 to log to a remote syslog server
+remote_syslog_server: "{{ logstash_server }}"
+remote_syslog_port: "{{ logstash_port }}"
+
+# set path to log locally, if unset, won't log to a file
+local_syslog_file: /var/log/messages
+
+photon_yum_repo: https://dl.bintray.com/vmware/photon_release_3.0_x86_64
+photon_yum_repo_enabled: yes
+
+tdnf:
+  makecache: false
+  distrosync: false
+  packages:
+  - bindutils
+  - sudo
+  - openssl-c_rehash
+  - vim
+  - nfs-utils
+  - ansible
+  - python-pip
+  - vim-extra
