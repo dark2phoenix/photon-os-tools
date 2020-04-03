@@ -9,7 +9,7 @@
 - name: assure docker group exists
   group: 
     name: docker
-    gid: {{ docker_gid }}
+    gid: '{{ docker_gid }}'
     state: present
 
 - name: assure Docker running and started at boot
