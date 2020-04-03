@@ -24,3 +24,13 @@
 
 - name: Install docker-py
   pip: name=docker-py state=present
+
+# configure docker deamon json file
+- name: configure docker daemon.json
+  template:
+    src: daemon.json.j2
+    dest: /etc/docker/daemon.json
+    mode: 0400
+    owner: root
+    group: root
+  notify: restart docker
