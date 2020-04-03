@@ -10,8 +10,8 @@
   when: ansible_distribution != 'VMware Photon OS'
 
 # -------- package management
-- include: tdnf.yml
-  when: ansible_distribution == 'VMware Photon OS'
+#- include: tdnf.yml
+#  when: ansible_distribution == 'VMware Photon OS'
 - include: yum.yml
   when: ansible_distribution == 'VMware Photon OS'
 - include: pip.yml
