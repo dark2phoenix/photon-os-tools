@@ -17,6 +17,8 @@
       - python-pip
       - vim-extra
       - iputils
+    photon_packages:
+      - logrotate
   
   tasks:
     #
