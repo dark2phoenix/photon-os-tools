@@ -1,0 +1,26 @@
+#
+# Copyright 2015 VMware, Inc.  All rights reserved.
+# SPDX-License-Identifier: Apache-2.0 OR GPL-3.0-only
+#
+---
+- include: registry.yml
+  when: docker_insecure_registries|length > 0
+
+- name: assure docker group exists
+  group: name=docker gid={{ docker_gid }} state=present
+
+- name: assure Docker running and started at boot
+  service: name=docker state=started enabled=yes
+
+- name: add docker Group spec in Docker unit file
+  ini_file: dest=/usr/lib/systemd/system/docker.service
+            section=Service
+            option=Group
+            value=docker
+            backup=yes
+  notify:
+    - reload unit files
+    - restart docker
+
+- name: Install docker-py
+  pip: name=docker-py state=present
