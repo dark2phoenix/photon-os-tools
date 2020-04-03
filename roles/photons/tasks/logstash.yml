@@ -1,0 +1,47 @@
+#
+# Copyright 2015 VMware, Inc.  All rights reserved.
+# SPDX-License-Identifier: Apache-2.0 OR GPL-3.0-only
+#
+---
+# -------- send systemd journal to remote syslog
+#- name: test for syslog-ng installed
+#  command: rpm -q syslog-ng
+#  register: syslog_installed
+#  ignore_errors: yes
+#  changed_when: false
+
+#
+# Not working yet - no yum support
+#
+#- name: install syslog-ng on host
+#  yum:
+#    name: syslog-ng
+#    state: present
+- name: install syslog-ng on host
+  vars:
+    - syslog_installpackages:
+      - syslog-ng
+        
+  shell: "[[ $(tdnf info installed | grep -q \"Name\\s*:\\s*{{ item }}$\"; echo $?) == 0 ]] && echo false || (tdnf install -qy {{ item }} && echo true)"
+  register: is_installed
+  changed_when: is_installed.stdout|bool
+  with_items: "{{ syslog_installpackages }}"
+  #when: tdnf.packages && tdnf.packages|length > 0
+
+
+- name: configure syslog-ng.conf
+  template:
+    src: syslog-ng.conf.j2
+    dest: /etc/syslog-ng/syslog-ng.conf
+    owner: root
+    group: root
+    mode: 0644
+  notify: restart syslog-ng
+
+- name: tell systemd to forward journal to syslog
+  lineinfile:
+    dest: /etc/systemd/journald.conf
+    regexp: "^ForwardToSyslog=.*"
+    line: "ForwardToSyslog=yes"
+    state: present
+  notify: restart journald
