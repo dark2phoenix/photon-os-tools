@@ -7,19 +7,19 @@
   when: docker_insecure_registries|length > 0
 
 - name: assure docker group exists
-  group: 
+  group:
     name: docker
-    gid: '{{ docker_gid }}'
+    gid: "{{ docker_gid }}"
     state: present
 
 - name: assure Docker running and started at boot
-  service: 
-    name: docker 
-    state: started 
+  service:
+    name: docker
+    state: started
     enabled: yes
 
 - name: add docker Group spec in Docker unit file
-  ini_file: 
+  ini_file:
     dest: /usr/lib/systemd/system/docker.service
     section: Service
     option: Group
@@ -30,16 +30,16 @@
     - restart docker
 
 - name: Install docker-py
-  pip: 
-    name: docker-py 
+  pip:
+    name: docker-py
     state: present
 
 # configure docker deamon json file
-- name: configure docker daemon.json
-  template:
-    src: daemon.json.j2
-    dest: /etc/docker/daemon.json
-    mode: 0400
-    owner: root
-    group: root
-  notify: restart docker
+#- name: configure docker daemon.json
+#  template:
+#    src: daemon.json.j2
+#    dest: /etc/docker/daemon.json
+#    mode: 0400
+#    owner: root
+#    group: root
+#  notify: restart docker
