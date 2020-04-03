@@ -13,11 +13,13 @@
 
 
 - name: ensure yum is installed
-  command: bash -c "rpm -q yum || tdnf install -y yum" creates=/usr/bin/yum
+  command: 
+    cmd: bash -c "rpm -q yum || tdnf install -y yum" 
+    creates: /usr/bin/yum
 
 - name: add additional packages
   yum: 
-    name: {{ photon_packages }}
+    name: "{{ photon_packages }}"
     state: present
 
 - name: update systemd to fix network daemon crashes
