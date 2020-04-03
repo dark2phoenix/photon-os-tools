@@ -22,11 +22,11 @@
 #   enabled: "{{ photon_yum_repo_enabled }}"
 
 
-#- name: ensure yum is installed
-#  command: bash -c "rpm -q yum || tdnf install -y yum" creates=/usr/bin/yum
-#
-#- name: add additional packages
-#  yum: name={{ photon_packages }} state=present
+- name: ensure yum is installed
+  command: bash -c "rpm -q yum || tdnf install -y yum" creates=/usr/bin/yum
 
-#- name: update systemd to fix network daemon crashes
-#  yum: name=systemd state=present
+- name: add additional packages
+  yum: name={{ photon_packages }} state=present
+
+- name: update systemd to fix network daemon crashes
+  yum: name=systemd state=present
