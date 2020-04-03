@@ -22,7 +22,7 @@
     #
     # Ensure operation only on Photon hosts
     #
-    - name: Skipping Non-Photon machine (group 'photons')
+    - name: Skipping Non-Photon machine (group 'photons') - {{ ansible_distribution }}
       debug:
         msg: "Skipping non photon host {{ ansible_distribution }}"
       when: ansible_distribution != 'VMware Photon OS'
