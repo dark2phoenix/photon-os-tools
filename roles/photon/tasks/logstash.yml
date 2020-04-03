@@ -3,17 +3,10 @@
 # SPDX-License-Identifier: Apache-2.0 OR GPL-3.0-only
 #
 ---
-# -------- send systemd journal to remote syslog
-#- name: test for syslog-ng installed
-#  command: rpm -q syslog-ng
-#  register: syslog_installed
-#  ignore_errors: yes
-#  changed_when: false
-
 #
 # Ensure installed
 #
-- name: Install syslog-ng on host
+- name: Ensure syslog-ng installed on host
   tdnf:
     name: syslog-ng
     state: present

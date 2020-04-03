@@ -4,13 +4,13 @@
 #
 - name: Update installed Photon packages to latest distribution
   command: tdnf -y distro-sync
-  when: tdnf.distrosync
+  when: tdnf-config.distrosync
 #
 # Create a tdnf cache for faster searching
 #
 - name: Create a tdnf cache for faster searching
   command: tdnf -y makecache
-  when: tdnf.makecache
+  when: tdnf-config.makecache
 
 #
 # Update all existing packages
@@ -24,9 +24,9 @@
 #
 - name: Add additional packages
   tdnf:
-    name: "{{ tdnf.packages}}"
+    name: "{{ tdnf-config.packages}}"
     state: latest
     update_cache: true
   when:
-    - tdnf.packages
-    - tdnf.packages|length > 0
+    - tdnf-config.packages
+    - tdnf-config.packages|length > 0
