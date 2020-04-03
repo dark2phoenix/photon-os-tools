@@ -17,12 +17,22 @@
     cmd: bash -c "rpm -q yum || tdnf install -y yum" 
     creates: /usr/bin/yum
 
+- name: upgrade all packages
+  yum:
+    name: '*'
+    state: latest
+    update_cache: true
+
 - name: add additional packages
   yum: 
-    name: "{{ photon_packages }}"
+    name: 
+      {{photon_packages}}
     state: present
+    update_cache: true
+
 
 - name: update systemd to fix network daemon crashes
   yum: 
     name: systemd 
     state: present
+    update_cache: true
