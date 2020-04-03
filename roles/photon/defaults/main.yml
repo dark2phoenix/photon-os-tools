@@ -32,7 +32,7 @@ remote_syslog_port: "{{ logstash_port }}"
 local_syslog_file: /var/log/messages
 
 #------------------
-# Yum/tdnf settings
+# tdnf Settings
 #------------------
 
 photon_yum_repo: https://dl.bintray.com/vmware/photon_release_3.0_x86_64
