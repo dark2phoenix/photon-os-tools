@@ -28,8 +28,8 @@
 #    state: latest
 #    update_cache: true
 
-#- name: update systemd to fix network daemon crashes
-#  yum:
-#   name: systemd
-#    state: present
-#    update_cache: true
+- name: update systemd to fix network daemon crashes
+  yum:
+   name: systemd
+    state: present
+    update_cache: true
