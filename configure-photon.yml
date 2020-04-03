@@ -2,24 +2,23 @@
 - hosts: all:localhost:photon
   become_user: root
   vars:
-    logstash_server: '172.28.7.111'
+    logstash_server: "172.28.7.111"
     logstash_port: 514
     tdnf:
-      makecache: false
-      distrosync: false
+      makecache: true
+      distrosync: true
       packages:
-      - bindutils
-      - sudo
-      - openssl-c_rehash
-      - vim
-      - nfs-utils
-      - ansible
-      - python-pip
-      - vim-extra
-      - iputils
-    photon_packages:
-      - logrotate
-  
+        - bindutils
+        - sudo
+        - openssl-c_rehash
+        - vim
+        - nfs-utils
+        - ansible
+        - python-pip
+        - vim-extra
+        - iputils
+        - logrotate
+
   tasks:
     #
     # Ensure operation only on Photon hosts
@@ -28,8 +27,7 @@
       debug:
         msg: "Skipping non photon host {{ ansible_distribution }}"
       when: ansible_distribution != 'VMware Photon OS'
-    
+
     - name: Configure Role 'Photon'
-      include_role: 
+      include_role:
         name: photon
-        
