@@ -50,6 +50,7 @@ tdnf:
     - ansible
     - python-pip
     - vim-extra
+    - logrotate
 
 photon_packages:
   - logrotate
