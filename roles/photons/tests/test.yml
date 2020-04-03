@@ -1,0 +1,20 @@
+# Copyright 2015 VMware, Inc.  All rights reserved.
+# SPDX-License-Identifier: Apache-2.0 OR GPL-3.0-only
+---
+- hosts: localhost
+  remote_user: root
+  sudo: yes
+  vars:
+    photon_testing_in_docker: true
+  roles:
+    - photon
+
+- hosts: localhost
+  remote_user: root
+  sudo: yes
+  vars:
+    logstash_server: localhost
+    logstash_port: 32768
+    photon_testing_in_docker: true
+  roles:
+    - photon

@@ -1,0 +1,12 @@
+#
+# Copyright 2015 VMware, Inc.  All rights reserved.
+# SPDX-License-Identifier: Apache-2.0 OR GPL-3.0-only
+#
+---
+- name: Assure pip installed via easy_install on Photon.
+  command: easy_install pip
+  args:
+    creates: /usr/bin/pip
+
+- name: Upgrade Virtualenv
+  pip: name=virtualenv state=present
