@@ -42,14 +42,14 @@ tdnf:
   makecache: false
   distrosync: false
   packages:
-  - bindutils
-  - sudo
-  - openssl-c_rehash
-  - vim
-  - nfs-utils
-  - ansible
-  - python-pip
-  - vim-extra
+    - bindutils
+    - sudo
+    - openssl-c_rehash
+    - vim
+    - nfs-utils
+    - ansible
+    - python-pip
+    - vim-extra
 
 photon_packages:
-- logrotate
+  - logrotate
