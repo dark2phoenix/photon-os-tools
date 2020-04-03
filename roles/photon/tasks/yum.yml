@@ -25,8 +25,7 @@
 
 - name: add additional packages
   yum: 
-    name: 
-      {{photon_packages}}
+    name: {{photon_packages}}
     state: present
     update_cache: true
 
