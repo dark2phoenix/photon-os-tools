@@ -11,29 +11,23 @@
 #  changed_when: false
 
 #
-# Not working yet - no yum support
+# Ensure installed
 #
-#- name: install syslog-ng on host
-#  yum:
-#    name: syslog-ng
-#    state: present
 - name: Install syslog-ng on host
   tdnf:
-    name:
-      - syslog-ng
+    name: syslog-ng
     state: present
 
 #- name: install syslog-ng on host
 #  vars:
 #    - syslog_installpackages:
 #      - syslog-ng
-#        
+#
 #  shell: "[[ $(tdnf info installed | grep -q \"Name\\s*:\\s*{{ item }}$\"; echo $?) == 0 ]] && echo false || (tdnf install -qy {{ item }} && echo true)"
 #  register: is_installed
 #  changed_when: is_installed.stdout|bool
 #  with_items: "{{ syslog_installpackages }}"
 #  #when: tdnf.packages && tdnf.packages|length > 0
-
 
 - name: configure syslog-ng.conf
   template:
