@@ -7,23 +7,32 @@
   when: docker_insecure_registries|length > 0
 
 - name: assure docker group exists
-  group: name=docker gid={{ docker_gid }} state=present
+  group: 
+    name: docker
+    gid: {{ docker_gid }}
+    state: present
 
 - name: assure Docker running and started at boot
-  service: name=docker state=started enabled=yes
+  service: 
+    name: docker 
+    state: started 
+    enabled: yes
 
 - name: add docker Group spec in Docker unit file
-  ini_file: dest=/usr/lib/systemd/system/docker.service
-            section=Service
-            option=Group
-            value=docker
-            backup=yes
+  ini_file: 
+    dest: /usr/lib/systemd/system/docker.service
+    section: Service
+    option: Group
+    value: docker
+    backup: yes
   notify:
     - reload unit files
     - restart docker
 
 - name: Install docker-py
-  pip: name=docker-py state=present
+  pip: 
+    name: docker-py 
+    state: present
 
 # configure docker deamon json file
 - name: configure docker daemon.json
