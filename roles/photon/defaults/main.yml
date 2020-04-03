@@ -38,7 +38,7 @@ local_syslog_file: /var/log/messages
 photon_yum_repo: https://dl.bintray.com/vmware/photon_release_3.0_x86_64
 photon_yum_repo_enabled: yes
 
-tdnf-config:
+tdnf_config:
   makecache: false
   distrosync: false
   packages:
