@@ -33,6 +33,8 @@
   pip:
     name: docker-py
     state: present
+
+
 # configure docker deamon json file
 #- name: configure docker daemon.json
 #  template:
