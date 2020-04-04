@@ -24,7 +24,7 @@
 #
 - name: Add additional packages
   tdnf:
-    name: {{ tdnf-config.packages}}
+    name: { { tdnf-config.packages } }
     state: latest
     update_cache: true
   when:
