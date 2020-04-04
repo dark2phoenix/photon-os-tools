@@ -9,4 +9,6 @@
     creates: /usr/bin/pip
 
 - name: Upgrade Virtualenv
-  pip: name=virtualenv state=present
+  pip: 
+    name: virtualenv 
+    state: present
