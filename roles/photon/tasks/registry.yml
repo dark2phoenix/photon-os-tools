@@ -6,10 +6,10 @@
 
 - name: add insecure registries to docker daemon
   template:
-    src=docker.service.j2
-    dest=/lib/systemd/system/docker.service
-    owner=root
-    group=root
+    src: docker.service.j2
+    dest: /lib/systemd/system/docker.service
+    owner: root
+    group: root
   notify:
     - reload unit files
     - restart docker
