@@ -6,10 +6,10 @@
 #
 # Ensure installed
 #
-#- name: Ensure syslog-ng installed on host
-#  tdnf:
-#    name: syslog-ng
-#    state: present
+- name: Ensure syslog-ng installed on host
+  tdnf:
+    name: syslog-ng
+    state: present
 
 #- name: install syslog-ng on host
 #  vars:
