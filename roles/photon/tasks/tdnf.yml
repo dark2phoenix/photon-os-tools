@@ -7,20 +7,20 @@
 #
 - name: Update installed Photon packages to latest distribution
   command: tdnf -y distro-sync
-#  when: tdnf_config.distrosync
+  when: tdnf_config.distrosync
 #
 # Create a tdnf cache for faster searching
 #
 - name: Create a tdnf cache for faster searching
   command: tdnf -y makecache
-#  when: tdnf_config.makecache
+  when: tdnf_config.makecache
 
 #
 # Update all existing packages
 #
 - name: "Update all existing packages"
   tdnf:
-    upgrade: true
+    upgrade: yes
 
 #
 # Install additional packages
@@ -29,7 +29,7 @@
   tdnf:
     name: "{{ tdnf_config.packages }}"
     state: latest
-    update_cache: true
+    update_cache: yes
   when:
     - tdnf_config.packages
     - tdnf_config.packages|length > 0
