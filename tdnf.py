@@ -218,7 +218,7 @@ def remove_packages(module, pkglist):
     module.exit_json(changed=True, msg="removed %s package(s)" % (packages), stdout=stdout, stderr=stderr)
 
 def convert_to_list(input_list):
-    if not input_list:
+    if input_list is None:
       input_list = []
     flat_list1 = [item for sublist in input_list for item in sublist if isinstance(sublist,list)]
     flat_list2 = [item for item in input_list if not isinstance(item,list)]
