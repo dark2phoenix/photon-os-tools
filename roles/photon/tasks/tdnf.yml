@@ -16,13 +16,6 @@
   when: tdnf_config.makecache
 
 #
-# Update all existing packages
-#
-- name: "Update all existing packages"
-  tdnf:
-    upgrade: yes
-
-#
 # Install additional packages
 #
 - name: Add additional packages
@@ -33,3 +26,10 @@
   when:
     - tdnf_config.packages
     - tdnf_config.packages|length > 0
+
+#
+# Update all existing packages
+#
+- name: "Update all existing packages"
+  tdnf:
+    upgrade: yes
