@@ -39,7 +39,9 @@
 - include: registry.yml
   when: docker_insecure_registries|length > 0
 
- configure docker deamon json file
+#
+# configure docker deamon json file
+#
 - name: configure docker daemon.json
   template:
     src: daemon.json.j2
