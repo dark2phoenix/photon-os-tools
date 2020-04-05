@@ -207,7 +207,7 @@ def install_packages(
     if rc != 0:
         module.fail_json(msg="failed to install %s" % (packages), stdout=stdout, stderr=stderr)
     was_changed = True
-    end_message - "installed %s package(s)"
+    end_message = "installed %s package(s)"
     if stderr.find('Nothing to do') >= 0:
         was_changed = False
         end_message = "%s packages(s) already installed"
