@@ -175,7 +175,7 @@ def upgrade_packages(
         module.fail_json(msg="failed to upgrade packages", stdout=stdout, stderr=stderr)
     was_changed = True
     end_message = "upgraded packages"
-    if stderr.find('Nothing to do') >= 0:
+    if 'Nothing to do' in stderr:
         was_changed = False
         end_message = "%s packages(s) already at latest"
     module.exit_json(changed=was_changed, msg=end_message, stdout=stdout, stderr=stderr)
@@ -213,7 +213,7 @@ def install_packages(
         module.fail_json(msg="failed to install %s" % (packages), stdout=stdout, stderr=stderr)
     was_changed = True
     end_message = "installed %s package(s)"
-    if stderr.find('Nothing to do') >= 0:
+    if 'Nothing to do' in stderr:
         was_changed = False
         end_message = "%s packages(s) already installed"
     module.exit_json(changed=was_changed, msg=end_message % (packages), stdout=stdout, stderr=stderr)
