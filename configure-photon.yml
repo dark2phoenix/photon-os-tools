@@ -8,15 +8,16 @@
       makecache: true
       distrosync: true
       packages:
-        - bindutils
         - sudo
-        - openssl-c_rehash
-        - vim
-        - nfs-utils
+        - bindutils
+         - openssl-c_rehash
+        - ansible
         - ansible
         - python-pip
+        - vim
         - vim-extra
         - iputils
+        - nfs-utils
         - logrotate
 
   tasks:
