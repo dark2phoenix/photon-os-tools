@@ -51,3 +51,6 @@
     destination_port: '443'
     jump: ACCEPT
     protocol: tcp
+
+- name: Save configuration
+  command: iptables-save > /etc/systemd/scripts/ip4save
