@@ -20,6 +20,13 @@ docker_gid: 995
 # docker insecure registies
 docker_insecure_registries: []
 
+# photon docker config
+docker_daemon_config:
+  - log-driver: 'json-file'
+  - log-opts:
+      - max-size: '10m'
+      - max-file: '1000'
+
 #---------------------------
 # Logstash Settings
 #---------------------------
