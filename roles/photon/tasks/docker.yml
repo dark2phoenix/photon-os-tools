@@ -14,12 +14,6 @@
     gid: "{{ docker_gid }}"
     state: present
 
-- name: Assure Docker running and started at boot
-  service:
-    name: docker
-    state: started
-    enabled: yes
-
 - name: Add docker Group spec in Docker unit file
   ini_file:
     dest: /usr/lib/systemd/system/docker.service
@@ -50,3 +44,9 @@
     owner: root
     group: root
   notify: restart docker
+
+- name: Assure Docker running and started at boot
+  service:
+    name: docker
+    state: started
+    enabled: yes
