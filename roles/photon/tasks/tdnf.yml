@@ -2,12 +2,19 @@
 # Default Package Installs
 #
 ---
+
+#
+#  Update Repo Cache
+#
+- name: Update tdnf Repository cache
+  tdnf:    
+    update_cache: yes
+
 #
 # Update packages to the latest release of photon
 #
 - name: Update installed Photon packages to latest distribution
   command: tdnf -y distro-sync
-  update_cache: yes
   when: tdnf_config.distrosync
 
 #
@@ -16,6 +23,7 @@
 - name: "Update all existing packages"
   tdnf:
     upgrade: yes
+    update_cache: yes
 
 #
 # Install additional packages
