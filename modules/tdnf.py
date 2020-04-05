@@ -174,7 +174,7 @@ def upgrade_packages(
     if rc != 0:
         module.fail_json(msg="failed to upgrade packages", stdout=stdout, stderr=stderr)
     was_changed = True
-    end_message = "upgraded packages"
+    end_message = "%s package(s) upgraded"
     if 'Nothing to do' in stderr:
         was_changed = False
         end_message = "%s packages(s) already at latest"
