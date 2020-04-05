@@ -203,6 +203,7 @@ def install_packages(
         for repo in disablerepolist:
             cmd = "%s --disablerepo=%s" % (cmd, repo)
     cmd = "%s %s" % (cmd, packages)
+    print('DEBUG cmd: ', cmd)
     rc, stdout, stderr = module.run_command(cmd, check_rc=False)
     if rc != 0:
         module.fail_json(msg="failed to install %s" % (packages), stdout=stdout, stderr=stderr)
