@@ -173,7 +173,12 @@ def upgrade_packages(
     rc, stdout, stderr = module.run_command(cmd, check_rc=False)
     if rc != 0:
         module.fail_json(msg="failed to upgrade packages", stdout=stdout, stderr=stderr)
-    module.exit_json(changed=True, msg="upgraded packages", stdout=stdout, stderr=stderr)
+        was_changed = True
+    end_message = "upgraded packages"
+    if stderr.find('Nothing to do') >= 0:
+        was_changed = False
+        end_message = "%s packages(s) already at latest"
+    module.exit_json(changed=True, msg=end_message, stdout=stdout, stderr=stderr)
 
 
 def install_packages(
