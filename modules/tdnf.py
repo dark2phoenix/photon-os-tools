@@ -188,7 +188,6 @@ def install_packages(
             conf_file):
     packages = " ".join(pkglist)
     cmd = "%s install -y" % (TDNF_PATH)
-    was_changed = True
     if excludelist:
         cmd = "%s --exclude %s" % (cmd, ",".join(excludelist))
     if disable_gpg_check:
@@ -207,9 +206,12 @@ def install_packages(
     rc, stdout, stderr = module.run_command(cmd, check_rc=False)
     if rc != 0:
         module.fail_json(msg="failed to install %s" % (packages), stdout=stdout, stderr=stderr)
+    was_changed = True
+    end_message - "installed %s package(s)"
     if stderr.find('Nothing to do') >= 0:
         was_changed = False
-    module.exit_json(changed=was_changed, msg="installed %s package(s)" % (packages), stdout=stdout, stderr=stderr)
+        end_message = "%s packages(s) already installed"
+    module.exit_json(changed=was_changed, msg=end_message % (packages), stdout=stdout, stderr=stderr)
 
 
 def remove_packages(module, pkglist):
