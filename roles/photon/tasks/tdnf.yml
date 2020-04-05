@@ -16,20 +16,20 @@
   when: tdnf_config.makecache
 
 #
-# Install additional packages
-#
-- name: Add additional packages
-  tdnf:
-    name: "{{ tdnf_config.packages }}"
-    state: latest
-    update_cache: yes
-  when:
-    - tdnf_config.packages
-    - tdnf_config.packages|length > 0
-
-#
 # Update all existing packages
 #
 - name: "Update all existing packages"
   tdnf:
     upgrade: yes
+    update_cache: yes
+
+#
+# Install additional packages
+#
+- name: Add additional packages
+  tdnf:
+    name: "{{ tdnf_config.packages }}"
+    state: present
+   when:
+    - tdnf_config.packages
+    - tdnf_config.packages|length > 0
