@@ -30,6 +30,6 @@
   tdnf:
     name: "{{ tdnf_config.packages }}"
     state: present
-   when:
+  when:
     - tdnf_config.packages
     - tdnf_config.packages|length > 0
