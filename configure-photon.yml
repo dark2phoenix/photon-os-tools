@@ -10,7 +10,7 @@
       packages:
         - sudo
         - bindutils
-         - openssl-c_rehash
+        - openssl-c_rehash
         - ansible
         - ansible
         - python-pip
