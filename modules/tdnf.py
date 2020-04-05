@@ -207,7 +207,7 @@ def install_packages(
     rc, stdout, stderr = module.run_command(cmd, check_rc=False)
     if rc != 0:
         module.fail_json(msg="failed to install %s" % (packages), stdout=stdout, stderr=stderr)
-    if stdout.find('Nothing to do') >= 0:
+    if stderr.find('Nothing to do') >= 0:
         was_changed = False
     module.exit_json(changed=was_changed, msg="installed %s package(s)" % (packages), stdout=stdout, stderr=stderr)
 
