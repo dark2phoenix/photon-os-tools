@@ -7,22 +7,28 @@
 - name: Skipping non Photons
   debug:
     msg: "Skipping non photon hosts because distro is {{ ansible_distribution }}"
-  when: ansible_distribution != 'VMware Photon OS'
+#  when: ansible_distribution != 'VMware Photon OS'
 
 # -------- package management
 - include: tdnf.yml
-  when: ansible_distribution == 'VMware Photon OS'
+#  when: ansible_distribution == 'VMware Photon OS'
 #- include: yum.yml
 #  when: ansible_distribution == 'VMware Photon OS'
+
 - include: pip.yml
-  when: ansible_distribution == 'VMware Photon OS'
+#  when: ansible_distribution == 'VMware Photon OS'
 
 
 # -------- docker setup
 - include: docker.yml
-  when: ansible_distribution == 'VMware Photon OS' and photon_with_docker and not photon_testing_in_docker
+#  when: ansible_distribution == 'VMware Photon OS' and 
+  when: photon_with_docker and not photon_testing_in_docker
 
 
 # -------- logstash support
 - include: logstash.yml
-  when: ansible_distribution == 'VMware Photon OS' and logstash_server is defined
+#  when: ansible_distribution == 'VMware Photon OS' and 
+  when: logstash_server is defined
+
+# -------- configure basic iptables rules
+- include: iptables.yml
