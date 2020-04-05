@@ -7,7 +7,7 @@
 - name: Skipping non Photons
   debug:
     msg: "Skipping non photon hosts because distro is {{ ansible_distribution }}"
-#  when: ansible_distribution != 'VMware Photon OS'
+  when: ansible_distribution != 'VMware Photon OS'
 
 # -------- package management
 - include: tdnf.yml
