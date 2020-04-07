@@ -32,3 +32,6 @@
 
 # -------- configure basic iptables rules
 - include: iptables.yml
+
+# -------- configure NTP
+- include: ntp.yml
