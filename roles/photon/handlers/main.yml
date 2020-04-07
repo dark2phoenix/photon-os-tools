@@ -18,3 +18,14 @@
 - name: restart docker
   action: service name=docker state=restarted enabled=yes
   when: not photon_testing_in_docker
+
+- name: Restart systemd-timesyncd
+  service:
+    name: systemd-timesyncd.service
+    state: restarted
+  listen: systemd-timesyncd configuration changed
+
+- name: Write adjtime
+  command: hwclock --systohc
+  when: ansible_virtualization_role == "host" or ansible_virtualization_role == "NA"
+  listen: systemd-timesyncd configuration changed
