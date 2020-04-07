@@ -3,9 +3,8 @@
   tdnf:
     name: ntp tzdata
 
-
 - name: Ensure that ntp is started and enabled on restart
-  Service: 
+  Service:
     name: ntp
     state: started
     enabled: yes
@@ -16,20 +15,19 @@
 
 - name: Set NTP configuration in /etc/systemd/timesyncd.conf
   lineinfile:
-    dest:    /etc/systemd/timesyncd.conf
-    regexp:  '{{ item.regexp }}'
-    line:    '{{ item.line   }}'
+    dest: /etc/systemd/timesyncd.conf
+    regexp: "{{ item.regexp }}"
+    line: "{{ item.line   }}"
     insertafter: '\[Time\]'
     backrefs: Yes
-    create:   True
-    state:    present
+    create: True
+    state: present
   with_items:
-
     - regexp: '^\s*#?\s*(NTP=).*$'
-      line:   'NTP={{ ntp.servers | join(" ") }}'
+      line: 'NTP={{ ntp.servers | join(" ") }}'
 
     - regexp: '^\s*#?\s*(FallbackNTP=).*$'
-      line:   'FallbackNTP={{ ntp.fallback_servers | join(" ") }}'
+      line: 'FallbackNTP={{ ntp.fallback_servers | join(" ") }}'
 
   notify:
     - reload timesyncd ntp
