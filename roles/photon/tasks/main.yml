@@ -34,4 +34,4 @@
 - include: iptables.yml
 
 # -------- configure NTP
-- include: ntp.yaml
+- include: ntp.yml
