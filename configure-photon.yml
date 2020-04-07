@@ -20,6 +20,20 @@
         - nfs-utils
         - logrotate
         - wget
+        - ntp
+        - tzdata
+    ntp:
+      timezone: 'America/New York'
+      servers:
+        - 172.28.5.2
+        - 172.28.5.3
+        - 172.28.6.2
+        - 172.28.6.3
+      fallback_servers:
+        - 0.pool.ntp.org
+        - 1.pool.ntp.org
+        - 2.pool.ntp.org
+        - 3.pool.ntp.org
 
   tasks:
     #
