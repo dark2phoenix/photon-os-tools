@@ -4,7 +4,7 @@
     name: ntp tzdata
 
 - name: Ensure that ntp is started and enabled on restart
-  Service:
+  service:
     name: ntp
     state: started
     enabled: yes
