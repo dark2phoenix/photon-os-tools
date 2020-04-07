@@ -5,7 +5,7 @@
 
 - name: Ensure that ntp is started and enabled on restart
   service:
-    name: ntp
+    name: ntpd
     state: started
     enabled: yes
 
