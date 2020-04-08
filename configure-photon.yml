@@ -39,11 +39,12 @@
     #
     # Ensure operation only on Photon hosts
     #
-    - name: Skipping Non-Photon machine (group 'photons')
-      debug:
-        msg: "Skipping non photon host {{ ansible_distribution }}"
-      when: ansible_distribution != 'VMware Photon OS'
-
-    - name: Configure Role 'Photon'
-      include_role:
-        name: photon
+    - name: Ensuring we only run on a Photon OS
+      block:
+        - name: Configure Role 'Photon'
+          include_role:
+            name: photon
+      when: ansible_distribution == 'VMware Photon OS'
+      rescue:
+        - debug:
+          msg: 'No action to take because system is not Photon'
