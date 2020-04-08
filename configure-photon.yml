@@ -45,6 +45,3 @@
           include_role:
             name: photon
       when: ansible_distribution == 'VMware Photon OS'
-      rescue:
-        - debug:
-          msg: 'No action to take because system is not Photon'
