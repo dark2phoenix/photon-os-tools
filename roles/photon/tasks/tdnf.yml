@@ -22,7 +22,7 @@
   tdnf:
     upgrade: yes
     update_cache: yes
-  when: tdnf.distrosync | true
+  when: tdnf.distrosync | bool
 
 #
 # Install additional packages
