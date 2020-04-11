@@ -8,7 +8,7 @@
 - name: Update tdnf repository cache
   tdnf:
     update_cache: yes
-  when: makecache | bool
+  when: tdnf.makecache | bool
 
 - name: update systemd to fix network daemon crashes
   tdnf:
