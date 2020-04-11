@@ -2,28 +2,27 @@
 # Default Package Installs
 #
 ---
-
 #
 #  Update Repo Cache
 #
-- name: Update tdnf Repository cache
-  tdnf:    
+- name: Update tdnf repository cache
+  tdnf:
     update_cache: yes
+  when: makecache | bool
 
-#
-# Update packages to the latest release of photon
-#
-- name: Update installed Photon packages to latest distribution
-  command: tdnf -y distro-sync
-  when: tdnf_config.distrosync
+- name: update systemd to fix network daemon crashes
+  tdnf:
+    name: systemd
+    state: present
 
 #
 # Update all existing packages
 #
-- name: "Update all existing packages"
+- name: Update all installed packages to repository latest
   tdnf:
     upgrade: yes
     update_cache: yes
+  when: tdnf.distrosync | true
 
 #
 # Install additional packages
