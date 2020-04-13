@@ -11,17 +11,6 @@
     name: syslog-ng
     state: present
 
-#- name: install syslog-ng on host
-#  vars:
-#    - syslog_installpackages:
-#      - syslog-ng
-#
-#  shell: "[[ $(tdnf info installed | grep -q \"Name\\s*:\\s*{{ item }}$\"; echo $?) == 0 ]] && echo false || (tdnf install -qy {{ item }} && echo true)"
-#  register: is_installed
-#  changed_when: is_installed.stdout|bool
-#  with_items: "{{ syslog_installpackages }}"
-#  #when: tdnf.packages && tdnf.packages|length > 0
-
 - name: configure syslog-ng.conf
   template:
     src: syslog-ng.conf.j2
