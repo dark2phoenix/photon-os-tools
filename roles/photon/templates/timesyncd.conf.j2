@@ -3,5 +3,5 @@
 # {{ ansible_managed }}
 
 [Time]
-NTP={{ timesync.servers | default("") | join(" ") }}
-FallbackNTP={{ timesync.fallback_servers | join(" ") }}
+NTP={{ timesync_config.servers | default("") | join(" ") }}
+FallbackNTP={{ timesync_config.fallback_servers | join(" ") }}

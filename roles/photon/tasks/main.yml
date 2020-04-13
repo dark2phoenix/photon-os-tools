@@ -20,3 +20,6 @@
 
 # -------- configure timesync
 - include: timesync.yml
+
+# -------- Install local ssl root certificate
+- include: certificates.yml
