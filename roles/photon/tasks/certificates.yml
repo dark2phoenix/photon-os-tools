@@ -16,5 +16,5 @@
   register:cert_installed
 
 - name: Compile new certificate into store
-  - command: c_rehash
+  command: c_rehash
   when: cert_installed.changed
