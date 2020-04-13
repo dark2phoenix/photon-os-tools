@@ -1,0 +1,20 @@
+---
+- name: Ensure OpenSSL is installed
+  tdnf: 
+    name: openssl 
+    state: present
+
+- name: Copy root certificate to store
+  copy:
+    content: "{{ ssl_config.ssl_root_certificate_pem }}"
+    dest: /etc/ssl/certs/{{ ssl_config.ssl_root_certificate_pem_filename }} 
+    owner: root
+    group: root
+    mode: "0644"
+    backup: yes
+  when: ssl_config.ssl_root_certificate_pem | bool
+  register:cert_installed
+
+- name: Compile new certificate into store
+  - command: c_rehash
+  when: cert_installed.changed

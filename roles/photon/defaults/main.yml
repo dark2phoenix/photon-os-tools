@@ -6,52 +6,85 @@
 #---------------------------
 # Docker Settings
 #---------------------------
-
-# prevent doing things that will break under docker.
-# specifically added so that travis-ci can test inside docker
-photon_testing_in_docker: false
-
-# Install Docker with Photon
-photon_with_docker: true
-
-# docker group id (gets created) for socket access and similar
-docker_gid: 995
-
-# docker insecure registies
-docker_insecure_registries: []
-
-# photon docker config
-docker_daemon_config:
-  log-driver: 'json-file'
-  log-opts:
-    max-size: '10m'
-    max-file: '1000'
-
-#---------------------------
-# Logstash Settings
-#---------------------------
-
-# set these 2 to log to a remote syslog server
-remote_syslog_server: "{{ logstash_server }}"
-remote_syslog_port: "{{ logstash_port }}"
-
-# set path to log locally, if unset, won't log to a file
-local_syslog_file: /var/log/messages
+docker_config:
+  # prevent doing things that will break under docker.
+  # specifically added so that travis-ci can test inside docker
+  photon_testing_in_docker: no
+  # docker group id (gets created) for socket access and similar
+  group_id: 995
+  # Insecure registries docker is allowed to connect to
+  insecure_registries: []
+  # Docker Daemon Config
+  daemon_config:
+    log-driver: "json-file"
+    log-opts:
+      max-size: "10m"
+      max-file: "1000"
 
 #------------------
 # tdnf Settings
 #------------------
-
 tdnf_config:
-  makecache: false
-  distrosync: false
+  # Create a cache of the configured sites for faster searching
+  makecache: no
+  # Update all installed packages to the latest in the current distribution
+  distrosync: no
+
+#------------------
+# Syslog forwarding Settings
+#------------------
+syslog_config:
+  # Server/IP to forward syslog to
+  server:
+  # Port to forward syslog to
+  port: 514
+  # File to log locally to.  If unset, won't log to a file
+  local_file: /var/log/messages
+
+#------------------
+# timesync/timezone Settings
+#------------------
+timesync_config:
+  # Timezone to set OS to (use TZdata values)
+  timezone: "Etc/UTC"
+  servers:
+    - 172.28.5.2
+    - 172.28.5.3
+    - 172.28.6.2
+    - 172.28.6.3
+  fallback_servers:
+    - 0.pool.ntp.org
+    - 1.pool.ntp.org
+    - 2.pool.ntp.org
+    - 3.pool.ntp.org
+
+#------------------
+# tdnf Settings
+#------------------
+tdnf_config:
+  updatecache: no
+  distrosync: no
   packages:
-    - bindutils
     - sudo
+    - bindutils
     - openssl-c_rehash
-    - vim
-    - nfs-utils
     - ansible
     - python-pip
+    - vim
     - vim-extra
+    - iputils
+    - nfs-utils
     - logrotate
+    - wget
+    - ntp
+    - tzdata
+  additional_packages: []
+
+#------------------
+# SSL Certificate settings
+#------------------
+ssl_config:
+  # Inline certificate (Include Begin and End Certificate lines)
+  ssl_root_certificate_pem: 
+  # Name of the certifcate to be stored in /etc/ssl/certs
+  ssl_root_certificate_pem_filename: 
