@@ -11,7 +11,7 @@
 - name: Assure docker group exists
   group:
     name: docker
-    gid: "{{ docker_gid }}"
+    gid: "{{ docker_config.group_id }}"
     state: present
 
 - name: Add docker Group spec in Docker unit file
@@ -31,7 +31,7 @@
     state: present
 
 - include: registry.yml
-  when: docker_insecure_registries|length > 0
+  when: docker_config.insecure_registries|length > 0
 
 #
 # configure docker deamon json file

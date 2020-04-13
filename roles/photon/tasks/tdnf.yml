@@ -8,7 +8,7 @@
 - name: Update tdnf repository cache
   tdnf:
     update_cache: yes
-  when: tdnf_config.makecache | bool
+  when: tdnf_config.updatecache | bool
 
 - name: update systemd to fix network daemon crashes
   tdnf:
@@ -29,7 +29,7 @@
 #
 - name: Add additional packages
   tdnf:
-    name: "{{ tdnf_config.packages }}"
+    name: "{{ tdnf_config.packages + tdnf_config.additional_packages }}"
     state: present
   when:
     - tdnf_config.packages
