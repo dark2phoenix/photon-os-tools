@@ -13,7 +13,7 @@
     mode: "0644"
     backup: yes
   when: ssl_config.ssl_root_certificate_pem | bool
-  register:cert_installed
+  register: cert_installed
 
 - name: Compile new certificate into store
   command: c_rehash
