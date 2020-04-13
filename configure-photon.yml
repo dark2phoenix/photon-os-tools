@@ -42,27 +42,27 @@
                 - 3.pool.ntp.org
             ssl_config:
               ssl_root_certificate_pem: |
------BEGIN CERTIFICATE-----
-MIIDjDCCAnSgAwIBAgIQcFhMNylTFI1NRNsBlwC3YDANBgkqhkiG9w0BAQsFADBF
-MRUwEwYKCZImiZPyLGQBGRYFbG9jYWwxFzAVBgoJkiaJk/IsZAEZFgdvdXJob21l
-MRMwEQYDVQQDEwptY2Nhbm5pY2FsMB4XDTE3MDMxMDA5MTQxMVoXDTIyMDMxMDA5
-MjQxMVowRTEVMBMGCgmSJomT8ixkARkWBWxvY2FsMRcwFQYKCZImiZPyLGQBGRYH
-b3VyaG9tZTETMBEGA1UEAxMKbWNjYW5uaWNhbDCCASIwDQYJKoZIhvcNAQEBBQAD
-ggEPADCCAQoCggEBALT/7VZeRmWIBWXE8u6CkfbIktQAVSfvZA9FiqgfilTySvDo
-PM6pI+RAfhO0B3jfAduEXAbxjE0EzeUSzKc9CtNsUu7NMiXnhyuzVkjvx3OQxr6C
-SqR+fKWjpV+WXVZkjV6bMuxo4mk13NTJf7MIRf6ckIHk3FfRTrhQS7WjjNYGXTTR
-WhH1tt6ssy8bSt0h7XIQg0IYvk5Id8bowX+wyMeIcYfmeEhMh294lecMeZcTL0hl
-GfZQ3yCnon1REIcnRIO1Hm08d94kS7lYcAeTBMxa/oPbFY2Vhp3CeuzhOn/vwD+D
-INdXxF5OsQnKusFh7telnhd6nePlqCOq7CzlNSkCAwEAAaN4MHYwCwYDVR0PBAQD
-AgGGMA8GA1UdEwEB/wQFMAMBAf8wHQYDVR0OBBYEFEczuncvWnkDOHcXHIJIzerA
-xEbVMBIGCSsGAQQBgjcVAQQFAgMBAAEwIwYJKwYBBAGCNxUCBBYEFOnAHftvxsSM
-cCnIC2dBEsHMSU1YMA0GCSqGSIb3DQEBCwUAA4IBAQCWhwV/8WzrUl+C9/dmrn9U
-Ab3bwa/HAZxu3bqqAmwNxtUx8hTpnQXiuY+0ZKd6r69A2F53dsYHbArCjWPckA7m
-1CiNxx97YyvPM+Ke8eIwPCFZ/i7dDU1iia+FSI45yEdf175qqyLmN8nrS0EvWUqR
-D7aMIgOGLqfQ6Ymx/edyVvwuz326nTnOwQ5TgcO4vJ+5umo+SYZNRGguAeJgPS0n
-/ZH8BGs8PEaEB3/Tkd+6/hIMErFqF3Tao3AlGVyQWG9wMaTPWpPfzWpPSzdLDgap
-k0+EOUfYm4AqUyXck5XqoshYXitLS3GQdNnjCplqkgPGAEKOqYNAFH94x9dqfghL
------END CERTIFICATE-----
+                -----BEGIN CERTIFICATE-----
+                MIIDjDCCAnSgAwIBAgIQcFhMNylTFI1NRNsBlwC3YDANBgkqhkiG9w0BAQsFADBF
+                MRUwEwYKCZImiZPyLGQBGRYFbG9jYWwxFzAVBgoJkiaJk/IsZAEZFgdvdXJob21l
+                MRMwEQYDVQQDEwptY2Nhbm5pY2FsMB4XDTE3MDMxMDA5MTQxMVoXDTIyMDMxMDA5
+                MjQxMVowRTEVMBMGCgmSJomT8ixkARkWBWxvY2FsMRcwFQYKCZImiZPyLGQBGRYH
+                b3VyaG9tZTETMBEGA1UEAxMKbWNjYW5uaWNhbDCCASIwDQYJKoZIhvcNAQEBBQAD
+                ggEPADCCAQoCggEBALT/7VZeRmWIBWXE8u6CkfbIktQAVSfvZA9FiqgfilTySvDo
+                PM6pI+RAfhO0B3jfAduEXAbxjE0EzeUSzKc9CtNsUu7NMiXnhyuzVkjvx3OQxr6C
+                SqR+fKWjpV+WXVZkjV6bMuxo4mk13NTJf7MIRf6ckIHk3FfRTrhQS7WjjNYGXTTR
+                WhH1tt6ssy8bSt0h7XIQg0IYvk5Id8bowX+wyMeIcYfmeEhMh294lecMeZcTL0hl
+                GfZQ3yCnon1REIcnRIO1Hm08d94kS7lYcAeTBMxa/oPbFY2Vhp3CeuzhOn/vwD+D
+                INdXxF5OsQnKusFh7telnhd6nePlqCOq7CzlNSkCAwEAAaN4MHYwCwYDVR0PBAQD
+                AgGGMA8GA1UdEwEB/wQFMAMBAf8wHQYDVR0OBBYEFEczuncvWnkDOHcXHIJIzerA
+                xEbVMBIGCSsGAQQBgjcVAQQFAgMBAAEwIwYJKwYBBAGCNxUCBBYEFOnAHftvxsSM
+                cCnIC2dBEsHMSU1YMA0GCSqGSIb3DQEBCwUAA4IBAQCWhwV/8WzrUl+C9/dmrn9U
+                Ab3bwa/HAZxu3bqqAmwNxtUx8hTpnQXiuY+0ZKd6r69A2F53dsYHbArCjWPckA7m
+                1CiNxx97YyvPM+Ke8eIwPCFZ/i7dDU1iia+FSI45yEdf175qqyLmN8nrS0EvWUqR
+                D7aMIgOGLqfQ6Ymx/edyVvwuz326nTnOwQ5TgcO4vJ+5umo+SYZNRGguAeJgPS0n
+                /ZH8BGs8PEaEB3/Tkd+6/hIMErFqF3Tao3AlGVyQWG9wMaTPWpPfzWpPSzdLDgap
+                k0+EOUfYm4AqUyXck5XqoshYXitLS3GQdNnjCplqkgPGAEKOqYNAFH94x9dqfghL
+                -----END CERTIFICATE-----
 
               ssl_root_certificate_pem_filename: home_mccannical_net_root.pem         
 
