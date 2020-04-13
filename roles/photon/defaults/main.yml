@@ -29,7 +29,22 @@ tdnf_config:
   makecache: no
   # Update all installed packages to the latest in the current distribution
   distrosync: no
-
+  packages:
+    - sudo
+    - bindutils
+    - openssl-c_rehash
+    - ansible
+    - python-pip
+    - vim
+    - vim-extra
+    - iputils
+    - nfs-utils
+    - logrotate
+    - wget
+    - ntp
+    - tzdata
+  additional_packages: []
+ 
 #------------------
 # Syslog forwarding Settings
 #------------------
@@ -57,28 +72,6 @@ timesync_config:
     - 1.pool.ntp.org
     - 2.pool.ntp.org
     - 3.pool.ntp.org
-
-#------------------
-# tdnf Settings
-#------------------
-tdnf_config:
-  updatecache: no
-  distrosync: no
-  packages:
-    - sudo
-    - bindutils
-    - openssl-c_rehash
-    - ansible
-    - python-pip
-    - vim
-    - vim-extra
-    - iputils
-    - nfs-utils
-    - logrotate
-    - wget
-    - ntp
-    - tzdata
-  additional_packages: []
 
 #------------------
 # SSL Certificate settings
