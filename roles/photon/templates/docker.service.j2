@@ -1,15 +1,10 @@
-{#
-   Copyright 2015 VMware, Inc.  All rights reserved.
-
-   SPDX-License-Identifier: Apache-2.0 OR GPL-3.0-only
-#}
 [Unit]
 Description=Docker Daemon
 Wants=network-online.target
 After=network-online.target
 
 [Service]
-ExecStart=/bin/docker -d -s overlay -H unix://var/run/docker.sock -H 0.0.0.0:2375 {% for r in docker.insecure_registries %} --insecure-registry {{ r.host }}:{{ r.port }}{% endfor %}
+ExecStart=/bin/docker -d -s overlay -H unix://var/run/docker.sock -H 0.0.0.0:2375 {% for r in docker_insecure_registries %} --insecure-registry {{ r.host }}:{{ r.port }}{% endfor %}
 
 ExecReload=/bin/kill -HUP $MAINPID
 KillMode=process

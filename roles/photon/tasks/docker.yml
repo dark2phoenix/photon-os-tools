@@ -1,17 +1,13 @@
-#
-# Copyright 2015 VMware, Inc.  All rights reserved.
-# SPDX-License-Identifier: Apache-2.0 OR GPL-3.0-only
-#
 ---
-- name: Install the docker package
+- name: Install Docker
   tdnf:
     name: docker
     state: latest
 
-- name: Assure docker group exists
+- name: Create docker group
   group:
     name: docker
-    gid: "{{ docker_config.group_id }}"
+    gid: "{{ docker_group_id }}"
     state: present
 
 - name: Add docker Group spec in Docker unit file
@@ -31,11 +27,8 @@
     state: present
 
 - include: registry.yml
-  when: docker_config.insecure_registries|length > 0
+  when: docker_insecure_registries|length > 0
 
-#
-# configure docker deamon json file
-#
 - name: configure docker daemon.json
   template:
     src: daemon.json.j2
@@ -45,7 +38,7 @@
     group: root
   notify: restart docker
 
-- name: Assure Docker running and started at boot
+- name: Set Docker start and run at boot
   service:
     name: docker
     state: started

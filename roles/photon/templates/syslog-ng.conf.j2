@@ -1,8 +1,3 @@
-{#
-   Copyright 2015 VMware, Inc.  All rights reserved.
-
-   SPDX-License-Identifier: Apache-2.0 OR GPL-3.0-only
-#} 
 # NOTE: this file managed by ansible. All changes will be overwritten.
 
 @version: 3.6
@@ -21,15 +16,15 @@ source s_network {
 	udp();
 };
 
-{% if syslog_config.local_file %}
+{% if syslog_local_file %}
 destination d_local {
-	file("{{ syslog_config.local_file }}");
+	file("{{ syslog_local_file }}");
 };
 {% endif %}
 
-{% if syslog_config.server and syslog_config.port %}
-destination remote_server { udp("{{ syslog_config.server }}" port({{ syslog_config.port }})); };
-destination logstash { syslog("{{ syslog_config.server }}" transport("tcp") port({{ syslog_config.port }}) ); };
+{% if syslog_server and syslog_port %}
+destination remote_server { udp("{{ syslog_server }}" port({{ syslog_port }})); };
+destination logstash { syslog("{{ syslog_server }}" transport("tcp") port({{ syslog_port }}) ); };
 {% endif %}
 
 log {
@@ -37,11 +32,11 @@ log {
 
 	# uncomment this line to open port 514 to receive messages
 	#source(s_network);
-{% if syslog_config.local_file %}
+{% if syslog_local_file %}
 	destination(d_local);
 {% endif %}
 
-{% if syslog_config.server and syslog_config.port %}
+{% if syslog_server and syslog_port %}
 	destination(logstash);
 {% endif %}
 };
