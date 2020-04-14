@@ -12,7 +12,6 @@
     group: root
     mode: "0644"
     backup: yes
-  when: ssl_root_certificate_pem | bool
   register: cert_installed
 
 - name: Compile new certificate into store
