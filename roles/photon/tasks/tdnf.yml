@@ -19,7 +19,7 @@
     name: "{{ tdnf_packages }}"
     state: present
   when:
-    - tdnf_packages
+    - tdnf_packages is defined
     - tdnf_packages|length > 0
 
 - name: Add additional packages
@@ -27,5 +27,5 @@
     name: "{{ tdnf_additional_packages }}"
     state: present
   when:
-    - tdnf_additional_packages
+    - tdnf_additional_packages is defined
     - tdnf_additional_packages|length > 0
