@@ -1,83 +1,88 @@
-#
-# Copyright 2015 VMware, Inc.  All rights reserved.
-# SPDX-License-Identifier: Apache-2.0 OR GPL-3.0-only
-#
-
+---
 #---------------------------
 # Docker Settings
 #---------------------------
-docker_config:
-  # prevent doing things that will break under docker.
-  # specifically added so that travis-ci can test inside docker
-  photon_testing_in_docker: no
-  # docker group id (gets created) for socket access and similar
-  group_id: 995
-  # Insecure registries docker is allowed to connect to
-  insecure_registries: []
-  # Docker Daemon Config
-  daemon_config:
-    log-driver: "json-file"
-    log-opts:
-      max-size: "10m"
-      max-file: "1000"
+# prevent doing things that will break under docker.
+# specifically added so that travis-ci can test inside docker
+docker_photon_testing_in_docker: no
+# docker group id (gets created) for socket access and similar
+docker_group_id: 995
+# Insecure registries docker is allowed to connect to
+# Format:
+#   docker_insecure_registries:
+#     - host: host1
+#       port: port1
+#     - host: host2
+#       port: port2
+docker_insecure_registries: []
+
+# Docker Daemon Config
+# This converts directly to JSON
+docker_daemon_config:
+  log-driver: "json-file"
+  log-opts:
+    max-size: "10m"
+    max-file: "1000"
 
 #------------------
 # tdnf Settings
 #------------------
-tdnf_config:
-  # Create a cache of the configured sites for faster searching
-  makecache: no
-  # Update all installed packages to the latest in the current distribution
-  distrosync: no
-  packages:
-    - sudo
-    - bindutils
-    - openssl-c_rehash
-    - ansible
-    - python-pip
-    - vim
-    - vim-extra
-    - iputils
-    - nfs-utils
-    - logrotate
-    - wget
-    - ntp
-    - tzdata
-  additional_packages: []
- 
+# Create a cache of the configured sites for faster searching
+tdnf_makecache: no
+# Update all installed packages to the latest in the current distribution
+tdnf_distrosync: no
+tdnf_packages:
+  - sudo
+  - bindutils
+  - openssl-c_rehash
+  - ansible
+  - python-pip
+  - vim
+  - vim-extra
+  - iputils
+  - nfs-utils
+  - logrotate
+  - wget
+  - ntp
+  - tzdata
+tdnf_additional_packages: []
+
 #------------------
 # Syslog forwarding Settings
 #------------------
-syslog_config:
-  # Server/IP to forward syslog to
-  server:
-  # Port to forward syslog to
-  port: 514
-  # File to log locally to.  If unset, won't log to a file
-  local_file: /var/log/messages
+# Server/IP to forward syslog to
+syslog_server:
+# Port to forward syslog to
+syslog_port: 514
+# File to log locally to.  If unset, won't log to a file
+syslog_local_file: /var/log/messages
 
 #------------------
 # timesync/timezone Settings
 #------------------
-timesync_config:
-  # Timezone to set OS to (use TZdata values)
-  timezone: "Etc/UTC"
-  servers:
-    - 172.28.5.2
-    - 172.28.5.3
-    - 172.28.6.2
-    - 172.28.6.3
-  fallback_servers:
-    - 0.pool.ntp.org
-    - 1.pool.ntp.org
-    - 2.pool.ntp.org
-    - 3.pool.ntp.org
+# Timezone to set OS to (use TZdata values)
+ntp_timezone: "Etc/UTC"
+# List of time servers to synch with
+ntp_servers:
+  - 0.pool.ntp.org
+  - 1.pool.ntp.org
+  - 2.pool.ntp.org
+  - 3.pool.ntp.org
+# List to sync with if above list cannot be reached
+ntp_fallback_servers:
+  - 0.pool.ntp.org
+  - 1.pool.ntp.org
+  - 2.pool.ntp.org
+  - 3.pool.ntp.org
 
 #------------------
 # SSL Certificate settings
 #------------------
-ssl_config:
-  # Inline certificate (Include Begin and End Certificate lines)
-  ssl_root_certificate_pem: 
-  # Name of the certifcate to be stored in /etc/ssl/certs
-  ssl_root_certificate_pem_filename: 
+# Inline certificate (Include Begin and End Certificate lines)
+# -----BEGIN CERTIFICATE-----
+# ...
+# -----END CERTIFICATE-----
+#
+ssl_root_certificate_pem:
+# Name of the certifcate to be stored in /etc/ssl/certs
+ssl_root_certificate_pem_filename:
