@@ -9,7 +9,7 @@
 
 # -------- docker setup
 - include: docker.yml
-  when: photon_with_docker and not photon_testing_in_docker
+  when: not docker_testing_of_photon_in_docker
 
 # -------- log forwarding support
 - include: logstash.yml
