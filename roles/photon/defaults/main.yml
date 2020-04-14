@@ -4,7 +4,7 @@
 #---------------------------
 # prevent doing things that will break under docker.
 # specifically added so that travis-ci can test inside docker
-docker_photon_testing_in_docker: no
+docker_testing_of_photon_in_docker: no
 # docker group id (gets created) for socket access and similar
 docker_group_id: 995
 # Insecure registries docker is allowed to connect to
