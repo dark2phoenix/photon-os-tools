@@ -1,18 +1,8 @@
 ---
-- name: Update systemd to fix network daemon crashes
-  tdnf:
-    name: systemd
-    state: latest
 - name: Update tdnf repository cache
   tdnf:
     update_cache: yes
   when: tdnf_updatecache | bool
-
-- name: Update all installed packages to repository latest
-  tdnf:
-    upgrade: yes
-    update_cache: yes
-  when: tdnf_distrosync | bool
 
 - name: Install standard packages
   tdnf:
@@ -29,3 +19,9 @@
   when:
     - tdnf_additional_packages is defined
     - tdnf_additional_packages|length > 0
+
+- name: Update all installed packages to repository latest
+  tdnf:
+    upgrade: yes
+    update_cache: yes
+  when: tdnf_distrosync | bool
