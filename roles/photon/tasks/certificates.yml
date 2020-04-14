@@ -6,13 +6,13 @@
 
 - name: Copy root certificate to store
   copy:
-    content: "{{ ssl_config.ssl_root_certificate_pem }}"
-    dest: /etc/ssl/certs/{{ ssl_config.ssl_root_certificate_pem_filename }} 
+    content: "{{ ssl_root_certificate_pem }}"
+    dest: /etc/ssl/certs/{{ ssl_root_certificate_pem_filename }} 
     owner: root
     group: root
     mode: "0644"
     backup: yes
-  when: ssl_config.ssl_root_certificate_pem | bool
+  when: ssl_root_certificate_pem | bool
   register: cert_installed
 
 - name: Compile new certificate into store

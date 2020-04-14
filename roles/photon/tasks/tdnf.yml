@@ -1,36 +1,31 @@
-#
-# Default Package Installs
-#
 ---
-#
-#  Update Repo Cache
-#
+- name: Update systemd to fix network daemon crashes
+  tdnf:
+    name: systemd
+    state: latest
 - name: Update tdnf repository cache
   tdnf:
     update_cache: yes
-  when: tdnf_config.updatecache | bool
+  when: tdnf_updatecache | bool
 
-- name: update systemd to fix network daemon crashes
-  tdnf:
-    name: systemd
-    state: present
-
-#
-# Update all existing packages
-#
 - name: Update all installed packages to repository latest
   tdnf:
     upgrade: yes
     update_cache: yes
-  when: tdnf_config.distrosync | bool
+  when: tdnf_distrosync | bool
 
-#
-# Install additional packages
-#
-- name: Add additional packages
+- name: Install standard packages
   tdnf:
-    name: "{{ tdnf_config.packages + tdnf_config.additional_packages }}"
+    name: "{{ tdnf_packages }}"
     state: present
   when:
-    - tdnf_config.packages
-    - tdnf_config.packages|length > 0
+    - tdnf_packages
+    - tdnf_packages|length > 0
+
+- name: Add additional packages
+  tdnf:
+    name: "{{ tdnf_additional_packages }}"
+    state: present
+  when:
+    - tdnf_additional_packages
+    - tdnf_additional_packages|length > 0
