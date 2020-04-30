@@ -43,7 +43,6 @@
     owner: root
   when: docker_config_path.stat.exists == false
 
-
 - name: configure docker daemon.json
   template:
     src: daemon.json.j2
