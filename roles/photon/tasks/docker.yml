@@ -29,6 +29,16 @@
 - include: registry.yml
   when: docker_insecure_registries|length > 0
 
+- name: "Create Docker configuration folder"
+  file:
+    path: /etc/docker
+    state: directory
+    mode: 0755
+    group: root
+    owner: root
+  when: /etc/docker.stat.exists == false
+
+
 - name: configure docker daemon.json
   template:
     src: daemon.json.j2
