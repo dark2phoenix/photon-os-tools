@@ -34,7 +34,7 @@
     path: /etc/docker
   register: docker_config_path
 
-- name: "Create Docker configuration folder"
+- name: Create Docker configuration folder
   file:
     path: /etc/docker
     state: directory
@@ -43,7 +43,7 @@
     owner: root
   when: docker_config_path.stat.exists == false
 
-- name: configure docker daemon.json
+- name: Configure docker daemon.json
   template:
     src: daemon.json.j2
     dest: /etc/docker/daemon.json
