@@ -3,3 +3,10 @@
   user:
     name: root
     expires: -1
+
+- name: Apply any user SSH keys
+  authorized_key:
+    user: item.user
+    state: present
+    key: item.ssh_key
+  loop: {{ ssh_enabled_users }}
