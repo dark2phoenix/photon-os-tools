@@ -9,4 +9,4 @@
     user: item.user
     state: present
     key: item.ssh_key
-  loop: {{ ssh_enabled_users }}
+  with_items: "{{ ssh_enabled_users }}"
