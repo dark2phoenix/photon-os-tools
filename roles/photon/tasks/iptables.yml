@@ -53,3 +53,8 @@
     jump: ACCEPT
     protocol: tcp
     state: present
+
+- name: save iptables
+  shell: "iptables-save > /etc/systemd/scripts/ip4save"
+  become: true
+  changed_when: false
