@@ -6,7 +6,7 @@
 
 - name: Apply any user SSH keys
   authorized_key:
-    user: item.name
+    user: "{{ item.name }}"
     state: present
-    key: item.ssh_key
+    key: "{{ item.ssh_key }}"
   with_items: "{{ ssh_enabled_users }}"
