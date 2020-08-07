@@ -1,0 +1,5 @@
+---
+- name: Remove expiry time for root
+  user:
+    name: root
+    expires: -1
