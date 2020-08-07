@@ -24,3 +24,6 @@
 # -------- Install local ssl root certificate
 - include: certificates.yml
   when: ssl_root_certificate_pem is defined
+
+# -------- default user operations 
+- include: users.yml
