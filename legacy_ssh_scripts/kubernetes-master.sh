@@ -74,7 +74,7 @@ repo_gpgcheck=1
 gpgkey=file:///etc/pki/rpm-gpg/GOOGLE-RPM-GPG-KEY
 EOF
 
-tdnf install kubeadm kubectl kubelet
+tdnf install kubeadm kubectl kubelet -y
 systemctl enable --now kubelet
 
 #
