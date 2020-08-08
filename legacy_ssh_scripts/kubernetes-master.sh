@@ -81,7 +81,8 @@ systemctl enable --now kubelet
 # Initialize the kubernetes cluster
 #
 kubeadm config images pull
-kubeadm init --pod-network-cidr=10.244.0.0/16 /kube-proxy  | tee ~/kubernetes/kubeadm-init.log
+kubeadm init --pod-network-cidr=10.244.0.0/16 | tee ~/kubernetes/kubeadm-init.log
+kubeadm addon kube-proxy
 
 #
 # Create the admin user
