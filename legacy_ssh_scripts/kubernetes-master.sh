@@ -88,3 +88,8 @@ wget -o ~/kubernetes/calico.yaml https://docs.projectcalico.org/v3.11/manifests/
 sed -i 's+192.168.0.0/16+10.244.0.0/16+g' ~/kubernetes/calico.yaml 
 kubectl apply -f ~/kubernetes/calico.yaml
 
+#
+# Start and enable the kube proxy (make it available on port 8080)
+#
+systemctl enable kube-proxy
+systemctl start kube-proxy
