@@ -81,8 +81,7 @@ systemctl enable --now kubelet
 # Initialize the kubernetes cluster
 #
 kubeadm config images pull
-kubeadm init --pod-network-cidr=10.244.0.0/16  | tee ~/kubernetes/kubeadm-init.log
-
+kubeadm init --pod-network-cidr=10.244.0.0/16 /kube-proxy  | tee ~/kubernetes/kubeadm-init.log
 
 #
 # Create the admin user
@@ -97,7 +96,7 @@ echo "export KUBECONFIG=/home/kubeadm/admin.conf" | tee -a /home/kubeadm/.bashrc
 # Export kubeadm info for root because I'm too lazy to su
 #
 export KUBECONFIG=/etc/kubernetes/admin.conf
-export KUBECONFIG=/etc/kubernetes/admin.conf | tee -a ~/.bashrc
+echo "export KUBECONFIG=/etc/kubernetes/admin.conf" >> /root/.bashrc
 
 #
 # Install networking (I'm using calico, you can opt for something else)
