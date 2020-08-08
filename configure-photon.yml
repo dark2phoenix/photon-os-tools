@@ -30,7 +30,6 @@
             ntp_timezone: "America/New_York"
             ntp_servers:
               - 172.28.5.2
-              - 172.28.1.220
               - 172.28.5.3
               - 172.28.6.2
               - 172.28.6.3
