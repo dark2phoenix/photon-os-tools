@@ -82,6 +82,7 @@ systemctl enable --now kubelet
 kubeadm config images pull
 kubeadm init --pod-network-cidr=10.244.0.0/16  | tee -a ~/kubernetes/kubeadm-init.log
 
+
 #
 # Create the admin user
 #
