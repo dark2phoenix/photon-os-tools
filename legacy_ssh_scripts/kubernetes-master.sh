@@ -16,6 +16,7 @@ iptables -A INPUT -p icmp --icmp-type echo-request -j ACCEPT
 iptables -A INPUT -p tcp -m tcp --dport 2379:2380 -j ACCEPT
 # kubernetes
 iptables -A INPUT -p tcp -m tcp --dport 6443 -j ACCEPT
+iptables -A INPUT -p tcp -m tcp --dport 8080 -j ACCEPT
 iptables -A INPUT -p tcp -m tcp --dport 10250:10252 -j ACCEPT
 # calico
 iptables -A INPUT -p tcp -m tcp --dport 179 -j ACCEPT
@@ -80,7 +81,7 @@ systemctl enable --now kubelet
 # Initialize the kubernetes cluster
 #
 kubeadm config images pull
-kubeadm init --pod-network-cidr=10.244.0.0/16  | tee -a ~/kubernetes/kubeadm-init.log
+kubeadm init --pod-network-cidr=10.244.0.0/16  | tee ~/kubernetes/kubeadm-init.log
 
 
 #
