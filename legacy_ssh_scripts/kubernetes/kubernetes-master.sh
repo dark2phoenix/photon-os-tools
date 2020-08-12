@@ -97,6 +97,7 @@ echo "export KUBECONFIG=/home/kubeadm/admin.conf" | tee -a /home/kubeadm/.bashrc
 #
 export KUBECONFIG=/etc/kubernetes/admin.conf
 echo "export KUBECONFIG=/etc/kubernetes/admin.conf" >> /root/.bashrc
+echo "export KUBECONFIG=/etc/kubernetes/admin.conf" >> /root/.bash_profile
 
 #
 # Install networking (I'm using calico, you can opt for something else)
