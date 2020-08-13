@@ -13,7 +13,7 @@ fi
 # Create the service account for vra in the system namespace
 #
 
-cat > /root/kubernetes/svc-vra-rbac-config.yaml<<EOF
+cat > /root/kubernetes/svc-vra-rbac-config.yaml<<EOF | sed -En "s/[SERVICE_ACCOUNT]/$SERVICE_ACCOUNT/" 
 apiVersion: v1
 kind: ServiceAccount
 metadata:
@@ -34,7 +34,7 @@ subjects:
     namespace: kube-system
 EOF
 
-sed -EN "s/[SERVICE_ACCOUNT]/$SERVICE_ACCOUNT/"
+
 
 kubectl create -f /root/kubernetes/svc-vra-rbac-config.yaml
 
