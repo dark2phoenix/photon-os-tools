@@ -1,3 +1,11 @@
+#!/bin/bash
+set -eo xtrace
+
+#
+# Install useful packages
+#
+tdnf install vim wget tar traceroute -y
+
 #
 # Create a working folder for commands both master and node
 # scripts will use

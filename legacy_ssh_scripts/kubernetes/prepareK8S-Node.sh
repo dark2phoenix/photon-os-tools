@@ -1,5 +1,11 @@
 #!/bin/bash
+set -eo xtrace
+
 #
+# Install useful packages
+#
+tdnf install vim wget tar traceroute -y
+
 #
 # iptables firewall rules for kubernetes node
 #
