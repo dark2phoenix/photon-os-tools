@@ -10,6 +10,15 @@
     gid: "{{ docker_group_id }}"
     state: present
 
+- name: Create a docker user
+  user:
+    name: docker
+    uid: "{{ docker_user_id }}"
+    shell: /bin/bash
+    groups: docker
+    append: yes
+    expires: -1
+
 - name: Add docker Group spec in Docker unit file
   ini_file:
     dest: /usr/lib/systemd/system/docker.service
