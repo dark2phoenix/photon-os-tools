@@ -13,7 +13,8 @@
             name: photon
           vars:
             docker_photon_testing_in_docker: no
-            docker_group_id: 995
+            docker_user_id: 233
+            docker_group_id: 233
             docker_insecure_registries: []
             docker_daemon_config:
                 log-driver: "json-file"
