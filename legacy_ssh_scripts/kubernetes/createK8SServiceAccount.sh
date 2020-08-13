@@ -3,7 +3,7 @@ set -eo xtrace
 #
 #  Process command line argument for service account name
 #
-$SERVICE_ACCOUNT=$1
+SERVICE_ACCOUNT=$1
 
 if [[ -z $SERVICE_ACCOUNT ]]; then
     echo "Enter the name of the service account"
