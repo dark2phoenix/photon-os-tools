@@ -17,7 +17,7 @@ step() {
   echo
   echo
   echo "#############################################"
-  echo "STEP_TEXT"
+  echo "$STEP_TEXT"
   echo "#############################################"
   echo 
   echo
