@@ -194,10 +194,12 @@ step "Allowing the master node to be a scheduling node"
 kubectl taint nodes --all node-role.kubernetes.io/master:NoSchedule-
 
 cat << EOF
-#####################################
-#####################################
 
-Installation is now complete for the master node
+
+#############################################
+#############################################
+
+Installation is now complete for the master node.
 
 To install nodes, you will need the following values for the installK8S-Node.sh script:
 
@@ -205,5 +207,6 @@ To install nodes, you will need the following values for the installK8S-Node.sh 
 
   discovery-token-ca-cert-hash: $(openssl x509 -pubkey -in /etc/kubernetes/pki/ca.crt | openssl rsa -pubin -outform der 2>/dev/null | openssl dgst -sha256 -hex | sed 's/^.* //')
 
-Alternately, you can copy the contents of the /root/kubernetes directory to the same location on the node
+Alternately, you can copy the contents of the /root/kubernetes directory to the same location on the node.
+
 EOF
