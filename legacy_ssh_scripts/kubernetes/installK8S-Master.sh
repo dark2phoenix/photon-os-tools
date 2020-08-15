@@ -89,7 +89,7 @@ To install nodes, you will need the following values for the installK8S-Node.sh 
 
   token: $TOKEN
 
-  discovery-token-ca-cert-hash: CERT_HASH
+  discovery-token-ca-cert-hash: $CERT_HASH
 
 Alternately, you can copy the contents of the /root/kubernetes directory to the same location on the node.
 
