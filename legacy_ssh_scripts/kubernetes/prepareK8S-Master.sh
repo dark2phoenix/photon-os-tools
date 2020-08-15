@@ -4,7 +4,7 @@
 #
 # Install useful packages
 #
-tdnf install vim wget tar traceroute -y
+tdnf install vim wget tar traceroute jq -y
 
 #
 # Create a working folder for commands both master and node
