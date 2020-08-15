@@ -110,6 +110,7 @@ done
 #
 # Add Google kubernetes repository to OS
 #
+echo "Adding the Google Repository"
 curl -o /etc/pki/rpm-gpg/GOOGLE-RPM-GPG-KEY https://packages.cloud.google.com/yum/doc/rpm-package-key.gpg
 chmod 644 /etc/pki/rpm-gpg/GOOGLE-RPM-GPG-KEY
 rpm --import /etc/pki/rpm-gpg/GOOGLE-RPM-GPG-KEY
@@ -128,31 +129,33 @@ EOF
 # Install core kubernetes utils and enable kublet
 #
 
+echo "Install kubernetes tools and enable kubelet"
 tdnf install kubeadm kubectl kubelet -y
 systemctl enable --now kubelet
 
 #
 # Initialize the kubernetes cluster
 #
+echo "installing kubernetes"
 kubeadm config images pull
 kubeadm init --pod-network-cidr=$INTERNAL_NETWORK | tee ~/kubernetes/kubeadm-init.log
 
 #
 # Create the admin user
 #
-
-if [[ $(id -u $ADMIN_USERNAME) -gt 0 ]]; then 
-    echo "$ADMIN_USERNAME already exists, skipping creation"
+if id -u "$ADMIN_USERNAME" >/dev/null 2>&1; then
+  echo "$ADMIN_USERNAME already exists, skipping creation"
 else
-    echo "Creating user $ADMIN_USERNAME"
-    useradd -m -G sudo -s /bin/bash $ADMIN_USERNAME
-    echo -e "VMware1!\nVMware1!" | passwd $ADMIN_USERNAME
-    cp /etc/kubernetes/admin.conf /home/$ADMIN_USERNAME/
-    sudo chown $(id -u $ADMIN_USERNAME):$(id -g $ADMIN_USERNAME) /home/$ADMIN_USERNAME/admin.conf
+  echo "Creating user $ADMIN_USERNAME"
+  useradd -m -G sudo -s /bin/bash $ADMIN_USERNAME
+  echo -e "VMware1!\nVMware1!" | passwd $ADMIN_USERNAME >/dev/null
+  cp /etc/kubernetes/admin.conf /home/$ADMIN_USERNAME/
+  sudo chown $(id -u $ADMIN_USERNAME):$(id -g $ADMIN_USERNAME) /home/$ADMIN_USERNAME/admin.conf
     echo "export KUBECONFIG=/home/$ADMIN_USERNAME/admin.conf" | tee -a /home/$ADMIN_USERNAME/.bashrc
 fi
+
 #
-# Export kubeadm info for root because I'm too lazy to su
+# Export kubeadm info for root (note this violates kubernetes common admin practices)
 #
 export KUBECONFIG=/etc/kubernetes/admin.conf
 echo "export KUBECONFIG=/etc/kubernetes/admin.conf" >> /root/.bashrc
@@ -161,4 +164,8 @@ echo "export KUBECONFIG=/etc/kubernetes/admin.conf" >> /root/.bash_profile
 #
 # Install networking (I'm using calico, you can opt for something else)
 #
-wget https://docs.projectcalico.org/manifests/calico.yaml | sed -R "s+192.168.0.0/16+$INTERNAL_NETWORK+g" | kubectl apply -f -
+
+kubectl create -f https://docs.projectcalico.org/manifests/tigera-operator.yaml
+
+# Get the Calico network profile and match up the CIDR Range
+ wget -O - https://docs.projectcalico.org/manifests/calico.yaml | sed -E -e 's/# - name: CALICO_IPV4POOL_CIDR/- name: CALICO_IPV4POOL_CIDR/' -e "s+#   value: \"192.168.0.0/16\"+  value: \"$INTERNAL_NETWORK\"+g" | kubectl apply -f -
