@@ -70,13 +70,40 @@ valid_cidr_network() {
 }
 
 #
+# Get the join params for cluster if you need them later
+#
+get_join_params() {
+CERT_HASH=$(openssl x509 -pubkey -in /etc/kubernetes/pki/ca.crt \
+| openssl rsa -pubin -outform der 2>/dev/null \
+| openssl dgst -sha256 -hex \
+| sed 's/^.* //')
+TOKEN=$(kubeadm token list -o json | jq -r '.token' | head -1)
+IP=$(kubectl get nodes -lnode-role.kubernetes.io/master -o json \
+| jq -r '.items[0].status.addresses[] | select(.type=="InternalIP") | .address')
+PORT=6443
+
+cat << EOF
+To install nodes, you will need the following values for the installK8S-Node.sh script:
+
+  cluster: https://$IP:$PORT
+
+  token: $TOKEN
+
+  discovery-token-ca-cert-hash: CERT_HASH
+
+Alternately, you can copy the contents of the /root/kubernetes directory to the same location on the node.
+
+EOF
+}
+
+#
 # Process Command line Arguments
 #
 for arg in "$@"
 do
     case $arg in
         --get-join-params)      
-          get_join_params()
+          get_join_params
           exit 0
         ;;
         --admin-username)      
@@ -127,32 +154,7 @@ do
     esac
 done
 
-#
-# Get the join params for cluster if you need them later
-#
-get_join_params() {
-CERT_HASH=$(openssl x509 -pubkey -in /etc/kubernetes/pki/ca.crt \
-| openssl rsa -pubin -outform der 2>/dev/null \
-| openssl dgst -sha256 -hex \
-| sed 's/^.* //')
-TOKEN=$(kubeadm token list -o json | jq -r '.token' | head -1)
-IP=$(kubectl get nodes -lnode-role.kubernetes.io/master -o json \
-| jq -r '.items[0].status.addresses[] | select(.type=="InternalIP") | .address')
-PORT=6443
 
-cat << EOF
-To install nodes, you will need the following values for the installK8S-Node.sh script:
-
-  cluster: https://$IP:$PORT
-
-  token: $TOKEN
-
-  discovery-token-ca-cert-hash: CERT_HASH
-
-Alternately, you can copy the contents of the /root/kubernetes directory to the same location on the node.
-
-EOF
-}
 
 #
 # Add Google kubernetes repository to OS
