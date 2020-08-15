@@ -45,6 +45,8 @@ tdnf_packages:
   - wget
   - ntp
   - tzdata
+  - traceroute
+  - tar
 tdnf_additional_packages: []
 
 #------------------

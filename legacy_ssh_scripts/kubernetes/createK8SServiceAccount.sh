@@ -13,28 +13,26 @@ fi
 # Create the service account for vra in the system namespace
 #
 
-cat > /root/kubernetes/svc-vra-rbac-config.yaml<<EOF | sed -En "s/[SERVICE_ACCOUNT]/$SERVICE_ACCOUNT/" 
+cat << EOF | sed -E "s/SERVICE_ACCOUNT/$SERVICE_ACCOUNT/" | kubectl create -f -
 apiVersion: v1
 kind: ServiceAccount
 metadata:
-  name: [SERVICE_ACCOUNT]
+  name: SERVICE_ACCOUNT
   namespace: kube-system
 ---
 apiVersion: rbac.authorization.k8s.io/v1beta1
 kind: ClusterRoleBinding
 metadata:
-  name: [SERVICE_ACCOUNT] 
+  name: SERVICE_ACCOUNT 
 roleRef:
   apiGroup: rbac.authorization.k8s.io
   kind: ClusterRole
   name: cluster-admin
 subjects:
   - kind: ServiceAccount
-    name: [SERVICE_ACCOUNT]
+    name: SERVICE_ACCOUNT
     namespace: kube-system
 EOF
-
-
 
 kubectl create -f /root/kubernetes/svc-vra-rbac-config.yaml
 
