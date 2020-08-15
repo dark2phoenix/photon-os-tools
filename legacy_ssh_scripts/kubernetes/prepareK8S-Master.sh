@@ -1,5 +1,5 @@
 #!/bin/bash
-set -eo xtrace
+#set -eo xtrace
 
 #
 # Install useful packages
