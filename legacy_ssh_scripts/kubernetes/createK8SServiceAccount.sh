@@ -1,5 +1,6 @@
 #!/bin/bash
-set -eo xtrace
+#set -eo xtrace
+
 #
 #  Process command line argument for service account name
 #
