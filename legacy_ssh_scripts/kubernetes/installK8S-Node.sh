@@ -6,7 +6,7 @@
 # we start
 #
 if [ ! -f ~/kubernetes/kubeadm-init.log ]; then
-    echo "Please copy the ~/kubernetes folder from the master to this"
+    echo "Please copy the /root/kubernetes folder from the master to this "
     echo "user's home directory so the installation can begin"
     exit 1
 fi
