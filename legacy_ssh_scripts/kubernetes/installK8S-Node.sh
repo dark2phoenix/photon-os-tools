@@ -1,5 +1,5 @@
 #!/bin/bash
-set -eo xtrace
+#set -eo xtrace
 
 #
 # Ensure that we've got the master kubeadm-init.log before
