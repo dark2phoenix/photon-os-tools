@@ -4,7 +4,7 @@
 #
 # Install useful packages
 #
-tdnf install vim wget tar traceroute -y
+tdnf install vim wget tar traceroute jq -y
 
 #
 # iptables firewall rules for kubernetes node
