@@ -8,6 +8,22 @@ ADMIN_USERNAME="kubeadmin"          # Local Linux User to admin kubenetes from
 ADMIN_PASSWORD="VMware1!"           # kubernetes admin password
 INTERNAL_NETWORK="10.244.0.0/16"    # Internal kubernetes newtork for calico
 
+
+#
+# Function to make it easy to what step is being exeucted
+#
+step() {
+  local STEP_TEXT=$1
+  echo
+  echo
+  echo "#############################################"
+  echo "STEP_TEXT"
+  echo "#############################################"
+  echo 
+  echo
+}
+
+
 #
 # Show help
 #
@@ -110,9 +126,7 @@ done
 #
 # Add Google kubernetes repository to OS
 #
-echo 
-echo "Adding the Google kubernetes epository"
-echo 
+step "Adding the Google kubernetes epository"
 curl -o /etc/pki/rpm-gpg/GOOGLE-RPM-GPG-KEY https://packages.cloud.google.com/yum/doc/rpm-package-key.gpg
 chmod 644 /etc/pki/rpm-gpg/GOOGLE-RPM-GPG-KEY
 rpm --import /etc/pki/rpm-gpg/GOOGLE-RPM-GPG-KEY
@@ -130,9 +144,7 @@ EOF
 #
 # Install core kubernetes utils and enable kublet
 #
-echo 
-echo "Install kubernetes tools and enable kubelet"
-echo 
+step "Install kubernetes tools and enable kubelet"
 
 tdnf install kubeadm kubectl kubelet -y
 systemctl enable --now kubelet
@@ -140,16 +152,14 @@ systemctl enable --now kubelet
 #
 # Initialize the kubernetes cluster
 #
-echo 
-echo "installing kubernetes"
-echo 
+step "installing kubernetes"
 kubeadm config images pull
 kubeadm init --pod-network-cidr=$INTERNAL_NETWORK | tee ~/kubernetes/kubeadm-init.log
 
 #
 # Create the admin user
 #
-echo 
+step "Creating the kubernetes admin user"
 if id -u "$ADMIN_USERNAME" >/dev/null 2>&1; then
   echo "$ADMIN_USERNAME already exists, skipping creation"
 else
@@ -158,13 +168,13 @@ else
   echo -e "VMware1!\nVMware1!" | passwd $ADMIN_USERNAME >/dev/null
   cp /etc/kubernetes/admin.conf /home/$ADMIN_USERNAME/
   sudo chown $(id -u $ADMIN_USERNAME):$(id -g $ADMIN_USERNAME) /home/$ADMIN_USERNAME/admin.conf
-    echo "export KUBECONFIG=/home/$ADMIN_USERNAME/admin.conf" | tee -a /home/$ADMIN_USERNAME/.bashrc
+  echo "export KUBECONFIG=/home/$ADMIN_USERNAME/admin.conf" | tee -a /home/$ADMIN_USERNAME/.bashrc
 fi
-echo 
 
 #
 # Export kubeadm info for root (note this violates kubernetes common admin practices)
 #
+step "Exporting kubeadm config to root"
 export KUBECONFIG=/etc/kubernetes/admin.conf
 echo "export KUBECONFIG=/etc/kubernetes/admin.conf" >> /root/.bashrc
 echo "export KUBECONFIG=/etc/kubernetes/admin.conf" >> /root/.bash_profile
@@ -172,29 +182,28 @@ echo "export KUBECONFIG=/etc/kubernetes/admin.conf" >> /root/.bash_profile
 #
 # Install networking (I'm using calico, you can opt for something else)
 #
-
-echo 
-echo Installing Calico for kubernetes newtorking
-echo 
+step "Installing Calico for kubernetes newtorking"
 kubectl create -f https://docs.projectcalico.org/manifests/tigera-operator.yaml
 
 # Get the Calico network profile and match up the CIDR Range
  wget -O - https://docs.projectcalico.org/manifests/calico.yaml | sed -E -e 's/# - name: CALICO_IPV4POOL_CIDR/- name: CALICO_IPV4POOL_CIDR/' -e "s+#   value: \"192.168.0.0/16\"+  value: \"$INTERNAL_NETWORK\"+g" | kubectl apply -f -
 
 
-echo 
-echo "Allowing the master node to be a scheduling node"
-echo
+step "Allowing the master node to be a scheduling node"
 # Allow scheduling of pods on this node
 kubectl taint nodes --all node-role.kubernetes.io/master:NoSchedule-
 
-echo "#####################################"
-echo "Installation is now complete for the master node"
-echo 
-echo To install nodes, you will need the following values for the installK8S-Node.sh script:
-echo
-echo "token: $(kubeadm token list | tail -n1 | cut -d ' ' -f1)" 
-echo 
-echo "discovery-token-ca-cert-hash: $(openssl x509 -pubkey -in /etc/kubernetes/pki/ca.crt | openssl rsa -pubin -outform der 2>/dev/null | openssl dgst -sha256 -hex | sed 's/^.* //')"
-echo
-echo Alternately, you can copy the contents of the /root/kubernetes directory to the same location on the node
+cat << EOF
+#####################################
+#####################################
+
+Installation is now complete for the master node
+
+To install nodes, you will need the following values for the installK8S-Node.sh script:
+
+  token: $(kubeadm token list | tail -n1 | cut -d ' ' -f1)
+
+  discovery-token-ca-cert-hash: $(openssl x509 -pubkey -in /etc/kubernetes/pki/ca.crt | openssl rsa -pubin -outform der 2>/dev/null | openssl dgst -sha256 -hex | sed 's/^.* //')
+
+Alternately, you can copy the contents of the /root/kubernetes directory to the same location on the node
+EOF
