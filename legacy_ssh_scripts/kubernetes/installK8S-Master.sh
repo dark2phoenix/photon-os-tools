@@ -1,4 +1,5 @@
 #!/bin/bash
+#set -eo xtrace
 
 #
 # Default values of arguments
