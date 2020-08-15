@@ -169,3 +169,6 @@ kubectl create -f https://docs.projectcalico.org/manifests/tigera-operator.yaml
 
 # Get the Calico network profile and match up the CIDR Range
  wget -O - https://docs.projectcalico.org/manifests/calico.yaml | sed -E -e 's/# - name: CALICO_IPV4POOL_CIDR/- name: CALICO_IPV4POOL_CIDR/' -e "s+#   value: \"192.168.0.0/16\"+  value: \"$INTERNAL_NETWORK\"+g" | kubectl apply -f -
+
+# Allow scheduling of pods on this node
+kubectl taint nodes --all node-role.kubernetes.io/master:NoSchedule-
