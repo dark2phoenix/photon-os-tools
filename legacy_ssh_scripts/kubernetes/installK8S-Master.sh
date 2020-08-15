@@ -29,11 +29,12 @@ step() {
 #
 show_help() {
 cat << EOF
-usage: captureLogLoop [-n|--name test_name] [-i|--iterations captures_to_collect] [-c|--cold-storage] [-t--test] [-?|-h|--help]
+usage: installK8S-Master [--admin-username name] [--admin-password password] [--internal-network cidr-network][--get-join-params] [-t--test] [-?|-h|--help]
   options:
     --admin-username  {username}        Local linux user to admin kubernetes from
     --admin-password  {password}        Password for the kubernetes admin user
     --internL-network {cidr-network}    Internal kubernetes network for calico
+    --get-join-params                   Retrieve the parameters necessary to join a node to this cluster
     -?, -h, --help                      Show this help
 EOF
 exit 0
@@ -74,6 +75,10 @@ valid_cidr_network() {
 for arg in "$@"
 do
     case $arg in
+        --get-join-params)      
+          get_join_params()
+          exit 0
+        ;;
         --admin-username)      
           CAPTURE_NAME="$2"
           if [[ ! "$CAPTURE_NAME" ]]; then 
@@ -99,7 +104,7 @@ do
           shift # Remove value from processing
         ;;
         --internal-network)      
-          CAPTURE_network="$2"
+          CAPTURE_NETWORK="$2"
           if [[ ! "$CAPTURE_NETWORK" ]]; then 
             echo "$1 should be called with a value"
             exit 1 
@@ -122,6 +127,32 @@ do
     esac
 done
 
+#
+# Get the join params for cluster if you need them later
+#
+get_join_params() {
+CERT_HASH=$(openssl x509 -pubkey -in /etc/kubernetes/pki/ca.crt \
+| openssl rsa -pubin -outform der 2>/dev/null \
+| openssl dgst -sha256 -hex \
+| sed 's/^.* //')
+TOKEN=$(kubeadm token list -o json | jq -r '.token' | head -1)
+IP=$(kubectl get nodes -lnode-role.kubernetes.io/master -o json \
+| jq -r '.items[0].status.addresses[] | select(.type=="InternalIP") | .address')
+PORT=6443
+
+cat << EOF
+To install nodes, you will need the following values for the installK8S-Node.sh script:
+
+  cluster: https://$IP:$PORT
+
+  token: $TOKEN
+
+  discovery-token-ca-cert-hash: CERT_HASH
+
+Alternately, you can copy the contents of the /root/kubernetes directory to the same location on the node.
+
+EOF
+}
 
 #
 # Add Google kubernetes repository to OS
@@ -192,21 +223,10 @@ kubectl create -f https://docs.projectcalico.org/manifests/tigera-operator.yaml
 step "Allowing the master node to be a scheduling node"
 # Allow scheduling of pods on this node
 kubectl taint nodes --all node-role.kubernetes.io/master:NoSchedule-
-
-cat << EOF
-
-
+echo << EOF
 #############################################
 #############################################
 
 Installation is now complete for the master node.
-
-To install nodes, you will need the following values for the installK8S-Node.sh script:
-
-  token: $(kubeadm token list | tail -n1 | cut -d ' ' -f1)
-
-  discovery-token-ca-cert-hash: $(openssl x509 -pubkey -in /etc/kubernetes/pki/ca.crt | openssl rsa -pubin -outform der 2>/dev/null | openssl dgst -sha256 -hex | sed 's/^.* //')
-
-Alternately, you can copy the contents of the /root/kubernetes directory to the same location on the node.
-
 EOF
+get_join_params
