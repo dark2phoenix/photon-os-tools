@@ -99,6 +99,7 @@ do
           fi
           shift # Remove key from processing
           shift # Remove value from processing
+        ;;
         -h|--help|-?)
           show_help
         ;;
