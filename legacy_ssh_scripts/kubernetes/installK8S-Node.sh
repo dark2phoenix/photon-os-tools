@@ -27,7 +27,7 @@ step() {
 #
 show_help() {
 cat << EOF
-usage: installK8S-Node [--clusteer cluster] [--token token] [--discovery-ca-cert-hash discovery-ca-cert-hash] [-?|-h|--help]
+usage: installK8S-Node [--cluster cluster] [--token token] [--discovery-ca-cert-hash discovery-ca-cert-hash] [-?|-h|--help]
   options:
     --cluster {cluster}                                   Kubernetes clusteer URL with port e.g. https://172.28.5.120:6443
     --token  {token}                                      Discovery token for the kubernetes cluster
