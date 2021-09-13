@@ -3,10 +3,27 @@
 # SPDX-License-Identifier: Apache-2.0 OR GPL-3.0-only
 #
 ---
-- name: Assure pip installed via easy_install on Photon.
-  command: easy_install pip
-  args:
-    creates: /usr/bin/pip
+
+# For Version 3 or lower
+- name: Enable python pip on Photon 3 or lower
+  block:
+    - name: Install Python pip
+      tdnf:
+        name: python-pip
+  
+    - name: Configure pip with easy_install
+      command: easy_install pip
+      args:
+        creates: /usr/bin/pip
+  when: 
+    - ansible_lsb.major_release|int <= 3
+
+# For version 3
+- name: Assure python pip installed via tdnf
+  tdnf:
+    name: python3-pip
+  when: 
+      - ansible_lsb.major_release|int >= 4
 
 - name: Upgrade Virtualenv
   pip: 
