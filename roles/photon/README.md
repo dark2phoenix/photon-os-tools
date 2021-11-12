@@ -1,6 +1,6 @@
 # ansible-role-photon
 
-Ansible playbook to automate basic setup of Photon OS instances.
+Ansible playbook to automate basic setup of Photon OS instance.
 
 ## Requirements
 
