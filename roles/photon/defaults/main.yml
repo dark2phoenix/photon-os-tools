@@ -87,3 +87,8 @@ ntp_fallback_servers:
 ssl_root_certificate_pem:
 # Name of the certifcate to be stored in /etc/ssl/certs
 ssl_root_certificate_pem_filename:
+
+#------------------
+# User settings
+#------------------
+users_root_pwd_no_expire: no
