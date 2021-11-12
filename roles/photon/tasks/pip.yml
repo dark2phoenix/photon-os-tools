@@ -4,7 +4,7 @@
 #
 ---
 
-# For Version 3 or lower
+# For Photon 3 and earlier, Python 2 is the default
 - name: Enable python pip on Photon 3 or lower
   block:
     - name: Install Python pip
@@ -18,7 +18,7 @@
   when: 
     - ansible_lsb.major_release|int <= 3
 
-# For version 3
+# For Photon 4, Python 3 is now the default
 - name: Assure python pip installed via tdnf
   tdnf:
     name: python3-pip
