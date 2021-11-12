@@ -4,7 +4,7 @@
 #
 ---
 
-- name: add insecure registries to docker daemon
+- name: Add insecure registries to docker daemon
   template:
     src: docker.service.j2
     dest: /lib/systemd/system/docker.service
