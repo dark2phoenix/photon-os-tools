@@ -19,6 +19,9 @@
     append: yes
     expires: -1
 
+- name: Set docker user password to never expire
+  shell: chage -M -1 docker
+
 - name: Add docker Group spec in Docker unit file
   ini_file:
     dest: /usr/lib/systemd/system/docker.service
