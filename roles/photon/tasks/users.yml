@@ -12,5 +12,5 @@
   with_items: "{{ ssh_enabled_users }}"
 
 - name: Set root user password to never expires
-  shell: change -M -1 root
+  shell: chage -M -1 root
   when: users_root_pwd_no_expire | bool
