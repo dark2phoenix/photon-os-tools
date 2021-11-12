@@ -2,7 +2,7 @@
 # SPDX-License-Identifier: Apache-2.0 OR GPL-3.0-only
 
 galaxy_info:
-  author: Tom Scanlan
+  author: Christopher McCann (originally Tom Scanlan)
   description: Install and manage Photon OS
   company: VMware Inc.
   license: "license ( Apache, GPLv3 )"
@@ -15,3 +15,4 @@ galaxy_info:
     - 1.0
     - 2.0
     - 3.0
+    - 4.0
