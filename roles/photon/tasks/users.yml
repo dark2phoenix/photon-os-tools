@@ -3,7 +3,6 @@
   user:
     name: root
     expires: -1
-    password_expire_max: 999999
 
 - name: Apply any user SSH keys
   authorized_key:
@@ -11,3 +10,6 @@
     state: present
     key: "{{ item.ssh_key }}"
   with_items: "{{ ssh_enabled_users }}"
+
+- name: Set root user password to never expires
+  shell: change -M -1 -u root
