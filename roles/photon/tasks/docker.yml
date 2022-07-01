@@ -39,7 +39,7 @@
     name: docker-py
     state: present
 
-- include: registry.yml
+- indlude_tasks: registry.yml
   when: docker_insecure_registries|length > 0
 
 - name: Docker configuration directory check
