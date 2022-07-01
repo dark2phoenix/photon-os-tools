@@ -5,7 +5,7 @@
     expires: -1
 
 - name: Apply any user SSH keys
-  authorized_key:
+  ansible.posix.authorized_key:
     user: "{{ item.name }}"
     state: present
     key: "{{ item.ssh_key }}"
