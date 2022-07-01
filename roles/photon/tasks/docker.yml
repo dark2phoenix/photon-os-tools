@@ -24,7 +24,7 @@
   shell: chage -M -1 docker
 
 - name: Add docker Group spec in Docker unit file
-  ini_file:
+  community.general.ini_file:
     dest: /usr/lib/systemd/system/docker.service
     section: Service
     option: Group
