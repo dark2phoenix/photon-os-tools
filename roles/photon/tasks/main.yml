@@ -4,26 +4,26 @@
 #
 ---
 # -------- package management
-- include: tdnf.yml
-- include: pip.yml
+- include_tasks: tdnf.yml
+- include_tasks: pip.yml
 
 # -------- docker setup
-- include: docker.yml
+- include_tasks: docker.yml
   when: not docker_testing_of_photon_in_docker
 
 # -------- log forwarding support
-- include: logstash.yml
+- include_tasks: logstash.yml
   when: logstash_server is defined
 
 # -------- configure basic iptables rules
-- include: iptables.yml
+- include_tasks: iptables.yml
 
 # -------- configure timesync
-- include: timesync.yml
+- include_tasks: timesync.yml
 
 # -------- Install local ssl root certificate
-- include: certificates.yml
+- include_tasks: certificates.yml
   when: ssl_root_certificate_pem is defined
 
 # -------- default user operations 
-- include: users.yml
+- include_tasks: users.yml
