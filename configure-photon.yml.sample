@@ -41,7 +41,11 @@
               - 3.pool.ntp.org
             ssl_root_certificate_pem: |
               -----BEGIN CERTIFICATE-----
+<<<<<<< HEAD
               intermediate certificate (if required)
+=======
+              leaf certificate
+>>>>>>> cf4d0add46071014336743ccade506dbfb690e22
               -----END CERTIFICATE-----
               -----BEGIN CERTIFICATE-----
               root certificate
