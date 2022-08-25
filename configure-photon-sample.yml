@@ -25,7 +25,7 @@
             tdnf_distrosync: no
             ssh_enabled_users:
               - name: root
-                ssh_key: "ssh-rsa [ssh-key data"
+                ssh_key: "[ssh-key data example:  ssh rsa AAaaa.....=keyname]"
             syslog_remote_server: "172.28.7.111"
             syslog_remote_port: 514
             ntp_timezone: "America/New_York"
@@ -41,11 +41,8 @@
               - 3.pool.ntp.org
             ssl_root_certificate_pem: |
               -----BEGIN CERTIFICATE-----
-<<<<<<< HEAD
               intermediate certificate (if required)
-=======
               leaf certificate
->>>>>>> cf4d0add46071014336743ccade506dbfb690e22
               -----END CERTIFICATE-----
               -----BEGIN CERTIFICATE-----
               root certificate
