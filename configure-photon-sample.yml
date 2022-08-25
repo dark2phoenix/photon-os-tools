@@ -42,7 +42,6 @@
             ssl_root_certificate_pem: |
               -----BEGIN CERTIFICATE-----
               intermediate certificate (if required)
-              leaf certificate
               -----END CERTIFICATE-----
               -----BEGIN CERTIFICATE-----
               root certificate
