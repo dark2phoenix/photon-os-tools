@@ -1,9 +1,4 @@
 ---
-- name: Remove expiry time for root
-  user:
-    name: root
-    expires: -1
-
 - name: Apply any user SSH keys
   ansible.posix.authorized_key:
     user: "{{ item.name }}"
