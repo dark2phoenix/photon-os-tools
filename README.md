@@ -200,7 +200,6 @@ This task sets up some initial configuration for users in the OS.
 <dd>SSH access key entry in the same format found in the user's ~/.ssh/authorized_keys file</dd>
 </dl>
 
-
 #### Sample YAML
 ```
 users_root_pwd_no_expire:
