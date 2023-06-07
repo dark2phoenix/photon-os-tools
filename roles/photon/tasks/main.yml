@@ -13,7 +13,7 @@
 
 # -------- log forwarding support
 - include_tasks: logstash.yml
-  when: logstash_server is defined
+  when: syslog_remote_server is defined
 
 # -------- configure basic iptables rules
 - include_tasks: iptables.yml
