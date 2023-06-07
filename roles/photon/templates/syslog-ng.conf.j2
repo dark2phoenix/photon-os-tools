@@ -23,8 +23,8 @@ destination d_local {
 {% endif %}
 
 {% if syslog_server and syslog_port %}
-destination remote_server { udp("{{ syslog_remote_server }}" port({{ syslog_remote_port }})); };
-destination logstash { syslog("{{ syslog_remote_server }}" transport("tcp") port({{ syslog_remote_port }}) ); };
+destination remote_server { udp("{{ syslog_server }}" port({{ syslog_port }})); };
+destination logstash { syslog("{{ syslog_server }}" transport("tcp") port({{ syslog_port }}) ); };
 {% endif %}
 
 log {
@@ -36,9 +36,8 @@ log {
 	destination(d_local);
 {% endif %}
 
-{% if syslog_remote_server and syslog_remote_port %}
+{% if syslog_server and syslog_port %}
 	destination(logstash);
 {% endif %}
 };
 
-syslog_remote_server
