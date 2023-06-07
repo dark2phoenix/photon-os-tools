@@ -52,9 +52,9 @@ tdnf_additional_packages: []
 # Syslog forwarding Settings
 #------------------
 # Server/IP to forward syslog to
-syslog_server:
+syslog_remote_server:
 # Port to forward syslog to
-syslog_port: 514
+syslog_remote_port: 514
 # File to log locally to.  If unset, won't log to a file
 syslog_local_file: /var/log/messages
 
