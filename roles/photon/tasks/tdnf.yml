@@ -1,4 +1,13 @@
 ---
+- name: Add photon repository
+  yum_repository:
+   name: photon repo
+   description: photon repo
+   baseurl: "{{ photon_yum_repo }}"
+   enabled: "{{ photon_yum_repo_enabled }}"
+   when:
+    - photon_yum_repo is defined
+
 - name: Update tdnf repository cache
   tdnf:
     update_cache: yes
