@@ -34,6 +34,7 @@
                 ssh_key: "[ssh-key data example:  ssh rsa AAaaa.....=keyname]"
             syslog_remote_server: "172.28.7.111"
             syslog_remote_port: 514
+            syslog_local_file: "/var/log/messages"
             ntp_timezone: "America/New_York"
             ntp_servers:
               - 172.28.5.2
@@ -53,7 +54,7 @@
               root certificate
               -----END CERTIFICATE-----
 
-            ssl_root_certificate_pem_filename: home_mccannical_net_root.pem    
+            ssl_root_certificate_pem_filename: my_custom_root.pem    
 
             users_root_pwd_no_expire: yes     
 
