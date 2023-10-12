@@ -85,7 +85,7 @@ ntp_fallback_servers:
 # -----END CERTIFICATE-----
 #
 ssl_root_certificate_pem:
-# Name of the certifcate to be stored in /etc/ssl/certs
+# Name of the certificate to be stored in /etc/ssl/certs
 ssl_root_certificate_pem_filename:
 
 #------------------
