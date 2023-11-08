@@ -5,8 +5,8 @@
    description: photon repo
    baseurl: "{{ photon_yum_repo }}"
    enabled: "{{ photon_yum_repo_enabled }}"
-   when:
-    - photon_yum_repo | length > 0
+  when:
+    - photon_yum_repo is defined
 
 - name: Update tdnf repository cache
   tdnf:
