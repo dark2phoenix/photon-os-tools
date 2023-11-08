@@ -30,6 +30,7 @@ docker_daemon_config:
 # Create a cache of the configured sites for faster searching
 tdnf_makecache: no
 # Update all installed packages to the latest in the current distribution
+photon_yum_repo:
 tdnf_distrosync: no
 tdnf_packages:
   - sudo
