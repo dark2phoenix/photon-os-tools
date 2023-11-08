@@ -29,8 +29,8 @@ docker_daemon_config:
 #------------------
 # Default variables for adding a custom photon repo
 #
-photon_yum_repo:
-photon_yum_repo_enabled:
+#photon_yum_repo:
+#photon_yum_repo_enabled:
 # Create a cache of the configured sites for faster searching
 #
 tdnf_makecache: no
