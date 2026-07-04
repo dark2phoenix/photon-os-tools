@@ -58,4 +58,4 @@
 
             users_root_pwd_no_expire: yes     
 
-      when: ansible_distribution == 'VMware Photon OS'
+      when: ansible_facts['distribution'] == 'VMware Photon OS'
