@@ -8,7 +8,6 @@ Ansible playbook to automate basic setup of Photon OS instance.  This was design
 - Prerequisites installed (if not called from launch_playbook.sh)
   - ansible 2.1 or higher
   - ansible-galaxy collection community.general
-  - ansible-galaxy collection ansible.posix
 
 ## Role Variables
 

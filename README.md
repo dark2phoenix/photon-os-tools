@@ -17,7 +17,6 @@ The following commands should be executed on the OS to sure all the prerequisite
 ``` shell
 tdnf install ansible -y
 ansible-galaxy collection install community.general
-ansible-galaxy collection install ansible.posix
 ```
 
 This only needs to be done once to ensure the successful usage of the playbook.
