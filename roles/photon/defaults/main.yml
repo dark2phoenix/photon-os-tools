@@ -31,9 +31,10 @@ docker_daemon_config:
 #
 #photon_yum_repo:
 #photon_yum_repo_enabled:
-# Create a cache of the configured sites for faster searching
+# Refresh tdnf repository metadata before installing (stale metadata causes 404s
+# when the repo has replaced a package version)
 #
-tdnf_makecache: no
+tdnf_updatecache: yes
 # Update all installed packages to the latest in the current distribution
 tdnf_distrosync: no
 tdnf_packages:
