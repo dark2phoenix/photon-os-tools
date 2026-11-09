@@ -6,8 +6,7 @@ Ansible playbook to automate basic setup of Photon OS instance.  This was design
 
 - Installation of VMware Photon 3.x, 4.x, or 5.x
 - Prerequisites installed (if not called from launch_playbook.sh)
-  - ansible 2.1 or higher
-  - ansible-galaxy collection community.general
+  - ansible-core 2.15 or higher (only `ansible.builtin` modules are used; no Galaxy collections needed)
 
 ## Role Variables
 
@@ -19,7 +18,7 @@ Ansible playbook to automate basic setup of Photon OS instance.  This was design
 |docker_user_id|integer|unset| Unix id of the user to run docker as|
 |docker_group_id|integer|995| Unix id of the group to run docker as|
 |docker_daemon_config|yaml|see example|These are logging options for Docker.  They come directly from the [Docker Logging Documentation](https://docs.docker.com/config/containers/logging/configure/).  Declare here as YAML and it will be converted to JSON automatically in the config file|Array of URLs to setup to allow the use of Docker insecure registries.|
-|docker_insecure_registries|array of string|unset|Array of additional insecure registries to configure docker with|
+|docker_insecure_registries|array|[]|Additional insecure registries, written to `insecure-registries` in daemon.json. Entries may be `'host:port'` strings or `{host: ..., port: ...}` mappings|
 
 ```yaml
 docker_photon_testing_in_docker: yes|no

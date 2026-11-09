@@ -16,10 +16,9 @@ The following commands should be executed on the OS to sure all the prerequisite
 
 ``` shell
 tdnf install ansible -y
-ansible-galaxy collection install community.general
 ```
 
-This only needs to be done once to ensure the successful usage of the playbook.
+The role only uses modules built into ansible-core, so no Ansible Galaxy collections are required. This only needs to be done once to ensure the successful usage of the playbook.
 
 The included launch_playbook.sh will run these commands before executing the playbook.
 
@@ -69,9 +68,9 @@ This task ensures that Python Pip gets installed with Ansible 3.  It has no conf
 
 ### Registry
 
-This Task sets up access for Docker to any defined insecure registries.
+Docker access to any defined insecure registries is configured through the `insecure-registries` key in `/etc/docker/daemon.json` (part of the Docker task).
 
-- docker_insecure_registries: [Comma separated list of URL's to the Repositories] :: List of any private registry URL's that you want this docker to be able to use.
+- docker_insecure_registries: [List of `host:port` strings, or `{host, port}` entries] :: Private registries that you want this docker to be able to use.
 
 ### tdnf
 

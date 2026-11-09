@@ -30,6 +30,8 @@
   loop_control:
     label: "{{ item.name }}"
 
-- name: Set root user password to never expires
-  shell: chage -M -1 root
+- name: Set root user password to never expire
+  ansible.builtin.user:
+    name: root
+    password_expire_max: -1
   when: users_root_pwd_no_expire | bool
