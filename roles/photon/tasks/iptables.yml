@@ -9,7 +9,7 @@
     state: latest
 
 - name: Firewall rule - allow all loopback traffic
-  iptables:
+  ansible.builtin.iptables:
     action: append
     chain: INPUT
     in_interface: lo
@@ -17,21 +17,21 @@
     state: present
 
 - name: Firewall rule - allow established connections
-  iptables:
+  ansible.builtin.iptables:
     chain: INPUT
     ctstate: ESTABLISHED,RELATED
     jump: ACCEPT
     state: present
 
 - name: Firewall rule - allow port ping traffic
-  iptables:
+  ansible.builtin.iptables:
     chain: INPUT
     jump: ACCEPT
     protocol: icmp
     state: present
 
 - name: Firewall rule - allow port 22/SSH traffic
-  iptables:
+  ansible.builtin.iptables:
     chain: INPUT
     destination_port: '22'
     jump: ACCEPT
@@ -39,7 +39,7 @@
     state: present
 
 - name: Firewall rule - allow port 80/HTTP traffic
-  iptables:
+  ansible.builtin.iptables:
     chain: INPUT
     destination_port: '80'
     jump: ACCEPT
@@ -47,7 +47,7 @@
     state: present
 
 - name: Firewall rule - allow port 443/HTTPS traffic
-  iptables:
+  ansible.builtin.iptables:
     chain: INPUT
     destination_port: '443'
     jump: ACCEPT
@@ -55,6 +55,6 @@
     state: present
 
 - name: save iptables
-  shell: "iptables-save > /etc/systemd/scripts/ip4save"
+  ansible.builtin.shell: "iptables-save > /etc/systemd/scripts/ip4save"
   become: true
   changed_when: false

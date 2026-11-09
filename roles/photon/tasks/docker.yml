@@ -5,68 +5,66 @@
     state: latest
 
 - name: Create docker group
-  group:
+  ansible.builtin.group:
     name: docker
     gid: "{{ docker_group_id }}"
     state: present
 
 - name: Create a docker user
-  user:
+  ansible.builtin.user:
     name: docker
     uid: "{{ docker_user_id }}"
     shell: /bin/bash
-    groups: 
+    groups:
       - docker
     append: yes
     expires: -1
+    password_expire_max: -1
 
-- name: Set docker user password to never expire
-  shell: chage -M -1 docker
+# Use a systemd drop-in rather than editing the packaged unit in
+# /usr/lib/systemd/system, which is overwritten on every docker package update.
+- name: Create docker.service drop-in directory
+  ansible.builtin.file:
+    path: /etc/systemd/system/docker.service.d
+    state: directory
+    owner: root
+    group: root
+    mode: "0755"
 
-- name: Add docker Group spec in Docker unit file
-  community.general.ini_file:
-    dest: /usr/lib/systemd/system/docker.service
-    section: Service
-    option: Group
-    value: docker
-    backup: yes
+- name: Run the docker service with the docker group
+  ansible.builtin.copy:
+    dest: /etc/systemd/system/docker.service.d/group.conf
+    content: |
+      # Managed by Ansible (photon role)
+      [Service]
+      Group=docker
+    owner: root
+    group: root
+    mode: "0644"
   notify:
     - reload unit files
     - restart docker
 
-- name: Install docker-py
-  pip:
-    name: docker-py
-    state: present
-
-- include_tasks: registry.yml
-  when: docker_insecure_registries|length > 0
-
-- name: Docker configuration directory check
-  stat:
-    path: /etc/docker
-  register: docker_config_path
-
 - name: Create Docker configuration folder
-  file:
+  ansible.builtin.file:
     path: /etc/docker
     state: directory
-    mode: 0755
-    group: root
+    mode: "0755"
     owner: root
-  when: docker_config_path.stat.exists == false
+    group: root
 
+# Insecure registries are set through daemon.json (see daemon.json.j2)
 - name: Configure docker daemon.json
-  template:
+  ansible.builtin.template:
     src: daemon.json.j2
     dest: /etc/docker/daemon.json
-    mode: 0400
+    mode: "0400"
     owner: root
     group: root
   notify: restart docker
 
 - name: Set Docker start and run at boot
-  service:
+  ansible.builtin.systemd_service:
     name: docker
     state: started
     enabled: yes

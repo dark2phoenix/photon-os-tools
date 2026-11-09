@@ -4,28 +4,38 @@
 #
 ---
 - name: reload unit files
-  command: systemctl daemon-reload
+  ansible.builtin.systemd_service:
+    daemon_reload: true
   when: not docker_testing_of_photon_in_docker
 
 - name: restart syslog-ng
-  action: service name=syslog-ng state=restarted enabled=yes
+  ansible.builtin.systemd_service:
+    name: syslog-ng
+    state: restarted
+    enabled: yes
   when: not docker_testing_of_photon_in_docker
 
 - name: restart journald
-  action: service name=systemd-journald state=restarted enabled=yes
+  ansible.builtin.systemd_service:
+    name: systemd-journald
+    state: restarted
+    enabled: yes
   when: not docker_testing_of_photon_in_docker
 
 - name: restart docker
-  action: service name=docker state=restarted enabled=yes
+  ansible.builtin.systemd_service:
+    name: docker
+    state: restarted
+    enabled: yes
   when: not docker_testing_of_photon_in_docker
 
 - name: Restart systemd-timesyncd
-  service:
+  ansible.builtin.systemd_service:
     name: systemd-timesyncd.service
     state: restarted
   listen: systemd-timesyncd configuration changed
 
 - name: Write adjtime
-  command: hwclock --systohc
+  ansible.builtin.command: hwclock --systohc
   when: ansible_facts['virtualization_role'] == "host" or ansible_facts['virtualization_role'] == "NA"
   listen: systemd-timesyncd configuration changed

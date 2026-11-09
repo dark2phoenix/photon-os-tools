@@ -5,7 +5,7 @@
     state: present
 
 - name: Copy root certificate to store
-  copy:
+  ansible.builtin.copy:
     content: "{{ ssl_root_certificate_pem }}"
     dest: /etc/ssl/certs/{{ ssl_root_certificate_pem_filename }} 
     owner: root
@@ -15,5 +15,5 @@
   register: cert_installed
 
 - name: Compile new certificate into store
-  command: rehash_ca_certificates.sh
+  ansible.builtin.command: rehash_ca_certificates.sh
   when: cert_installed.changed

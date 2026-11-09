@@ -10,22 +10,26 @@
     - name: Install Python pip
       tdnf:
         name: python-pip
-  
+
     - name: Configure pip with easy_install
-      command: easy_install pip
+      ansible.builtin.command: easy_install pip
       args:
         creates: /usr/bin/pip
-  when: 
-    - ansible_facts['lsb']['major_release']|int <= 3
 
-# For Photon 4, Python 3 is now the default
-- name: Assure python pip installed via tdnf
+    - name: Install virtualenv via pip
+      ansible.builtin.pip:
+        name: virtualenv
+        state: present
+  when:
+    - ansible_facts['distribution_major_version'] | int <= 3
+
+# For Photon 4 and later, Python 3 is the default. Install from tdnf rather
+# than pip so the system Python stays package-managed.
+- name: Install python3 pip and virtualenv via tdnf
   tdnf:
-    name: python3-pip
-  when: 
-      - ansible_facts['lsb']['major_release']|int >= 4
-
-- name: Upgrade Virtualenv
-  pip: 
-    name: virtualenv 
+    name:
+      - python3-pip
+      - python3-virtualenv
     state: present
+  when:
+    - ansible_facts['distribution_major_version'] | int >= 4
