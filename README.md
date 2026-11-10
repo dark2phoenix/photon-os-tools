@@ -114,6 +114,7 @@ This task allows for the configuration of local tdnf settings as well as install
 - `tzdata`
 - `traceroute`
 - `tar`
+- `less`
 
 ### TimeSync
 

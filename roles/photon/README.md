@@ -97,16 +97,18 @@ Playbook will install the following packages by default:
 - `tzdata`
 - `traceroute`
 - `tar`
+- `less`
 
 **Table:** tdnf Configurable Parameters
 
-| Parameter                  | Type                | Default | Description                                                                                                                                                       |
-| :------------------------- | :------------------ | :------ | :---------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `photon_yum_repo`          | string              | unset   | HTTP address/IP of a specific custom Photon OS binary package repos.                                                                                              |
-| `photon_yum_repo_enabled`  | boolean             | unset   | Should the created repo be enabled                                                                                                                                |
-| `tdnf_updatecache`         | boolean             | no      | Instructs tdnf to update and rebuild the local cache of packages lists                                                                                            |
-| `tdnf_distrosync`          | boolean             | no      | Instruct tdnf to update all local patches to match the current distribution channel for the OS release                                                            |
-| `tdnf_additional_packages` | \[array of string\] | unset   | Ansible array of additional packages to install beyond the default packages (if you accidentally list of the defaults, will skip as it will already be installed) |
+| Parameter                  | Type                | Default        | Description                                                                                                                                                       |
+| :------------------------- | :------------------ | :------------- | :---------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `photon_yum_repo`          | string              | unset          | HTTP address/IP of a specific custom Photon OS binary package repos.                                                                                              |
+| `photon_yum_repo_enabled`  | boolean             | unset          | Should the created repo be enabled                                                                                                                                |
+| `tdnf_updatecache`         | boolean             | yes            | Instructs tdnf to update and rebuild the local cache of packages lists                                                                                            |
+| `tdnf_distrosync`          | boolean             | no             | Instruct tdnf to update all local patches to match the current distribution channel for the OS release                                                            |
+| `tdnf_packages`            | \[array of string\] | see list above | Packages every host gets. Overriding it replaces the whole list; to add packages use `tdnf_additional_packages`                                                   |
+| `tdnf_additional_packages` | \[array of string\] | []             | Ansible array of additional packages to install beyond the default packages (if you accidentally list of the defaults, will skip as it will already be installed) |
 
 **Example:** tdnf
 
@@ -127,7 +129,7 @@ This section allows you to configure NTP and time zone related settings.
 
 | Parameter            | Type             | Default              | Description                                                                                       |
 | :------------------- | :--------------- | :------------------- | :------------------------------------------------------------------------------------------------ |
-| ntp_timezone         | string           | unset                | Unix [standard time zone](https://en.wikipedia.org/wiki/List_of_tz_database_time_zones)           |
+| ntp_timezone         | string           | Etc/UTC              | Unix [standard time zone](https://en.wikipedia.org/wiki/List_of_tz_database_time_zones)           |
 | ntp_servers          | array of strings | \[0-3\].pool.ntp.org | List of primary NTP Server TCP/IP addresses to use for time synch                                 |
 | ntp_fallback_servers | array of Strings | \[0-3\].pool.ntp.org | List of secondary/fallback NTP Server TCP/IP addresses to use if all primary sources are unusable |
 

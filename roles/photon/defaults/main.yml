@@ -74,6 +74,7 @@ tdnf_packages:
   - tzdata
   - traceroute
   - tar
+  - less
 tdnf_additional_packages: []
 
 #------------------
