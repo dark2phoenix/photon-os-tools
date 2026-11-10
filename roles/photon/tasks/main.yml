@@ -15,8 +15,8 @@
 - ansible.builtin.include_tasks: logstash.yml
   when: syslog_remote_server is defined
 
-# -------- configure basic iptables rules
-- ansible.builtin.include_tasks: iptables.yml
+# -------- firewall (seeded once; see firewall.yml)
+- ansible.builtin.include_tasks: firewall.yml
 
 # -------- configure timesync
 - ansible.builtin.include_tasks: timesync.yml

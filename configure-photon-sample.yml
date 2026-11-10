@@ -12,7 +12,7 @@
           include_role:
             name: photon
           vars:
-            docker_photon_testing_in_docker: no
+            docker_testing_of_photon_in_docker: no
             docker_user_id: 233
             docker_group_id: 233
             docker_insecure_registries: []
@@ -22,10 +22,8 @@
               log-driver: "json-file"
               log-opts:
                 max-size: "10m"
-                max-file: "1000"
+                max-file: "3"
               storage-driver: "overlay2"
-              storage-opts:
-                - "overlay2.override_kernel_check=true"
             tdnf_updatecache: yes
             tdnf_distrosync: no
             tdnf_additional_packages: []
@@ -54,8 +52,8 @@
               root certificate
               -----END CERTIFICATE-----
 
-            ssl_root_certificate_pem_filename: my_custom_root.pem    
+            ssl_root_certificate_pem_filename: my_custom_root.pem
 
-            users_root_pwd_no_expire: yes     
+            users_root_pwd_no_expire: yes
 
       when: ansible_facts['distribution'] == 'VMware Photon OS'
