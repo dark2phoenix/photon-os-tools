@@ -182,7 +182,9 @@ def update_package_db(module, exit):
     if rc != 0:
         module.fail_json(msg="could not update package db", stdout=stdout, stderr=stderr)
     elif exit:
-        module.exit_json(changed=True, msg='updated package db', stdout=stdout, stderr=stderr)
+        # Like ansible.builtin.apt: a metadata refresh is not a change to the
+        # host, so a re-run that only refreshes the cache reports changed=0.
+        module.exit_json(changed=False, cache_updated=True, msg='updated package db', stdout=stdout, stderr=stderr)
     else:
         return True
 
