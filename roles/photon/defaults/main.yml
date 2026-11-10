@@ -52,6 +52,8 @@ tdnf_packages:
   - tzdata
   - traceroute
   - tar
+  # git and systemctl page their output through less
+  - less
 tdnf_additional_packages: []
 
 #------------------
