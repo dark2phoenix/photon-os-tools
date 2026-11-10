@@ -33,6 +33,18 @@
          or ('/etc/systemd/scripts/ip4save' not in firewall_rpm_verify.stdout)
          or (firewall_ip4save_head.stdout is search('Managed by Ansible \(photon-os-tools\)')) }}
 
+# The written firewall drops everything not listed, so a list without SSH
+# would cut off remote access.
+- name: Refuse to write a firewall that blocks SSH
+  ansible.builtin.assert:
+    that:
+      - firewall_allowed_ports | map('string') | select('match', '^22(/tcp)?$') | list | length > 0
+    fail_msg: >-
+      firewall_allowed_ports has no 22/tcp, so the firewall the role is about to
+      write would block SSH. Add 22/tcp to firewall_allowed_ports.
+    quiet: true
+  when: firewall_role_writes | bool
+
 - name: Write the role's firewall rules
   ansible.builtin.template:
     src: ip4save.j2
