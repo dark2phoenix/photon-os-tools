@@ -37,26 +37,28 @@ The included launch_playbook.sh will run these commands before executing the pla
 
 ## Tasks in this Playbook
 
+### Re-running on an existing host
+
+The playbook is the starting configuration for a new Photon VM, and it is safe to re-run. Most settings (syslog forwarding, time sync, certificates, SSH keys, packages) are enforced on every run. Two files are only seeded, because something else often takes them over after the first boot:
+
+| File | Written when | To overwrite it anyway |
+| --- | --- | --- |
+| `/etc/docker/daemon.json` | it doesn't exist yet | `force_reset_docker_config: true` |
+| `/etc/systemd/scripts/ip4save` (the firewall) | it is still Photon's stock file, or the role's own file (first line `# Managed by Ansible (photon-os-tools)`) | `force_reset_firewall: true` |
+
+When the role leaves one of them alone it says so in the play output and names the switch. Both switches are one-off: set them for the run that should reset the file, then remove them.
+
 ### Certificates
 
 This task will put your trusted root certificate(s) into the default OS trust store.
 
 ### Docker
 
-This module configures the docker daemon.
+This task installs and configures the docker daemon. `docker_daemon_config` becomes `/etc/docker/daemon.json` (default: systemd cgroup driver, overlay2, json-file logs capped at 3 files of 10 MB per container), written only when the file doesn't exist yet; see above.
 
-### IP Tables
+### Firewall
 
-This task contains sets up some basic firewall rules for use with the VM:
-
-- Allow loopback traffic
-- Allow Allow established connections
-- Allow ICMP (ping) to and from the OS
-- Allow Port 80 (HTTP) into the VM
-- Allow Port 443 (HTTPS) into the VM
-- Allow Port 22 (ssh) into the VM
-
-These tasks are not currently configurable - comment out any tasks you do not want to run.
+Photon restores `/etc/systemd/scripts/ip4save` at boot. When the role writes that file (see above) it starts from Photon's stock rules (drop inbound by default; allow loopback, established connections and SSH) and adds ping plus every entry in `firewall_allowed_ports` (default `22/tcp`, `80/tcp`, `443/tcp`; `port` or `port/proto`). It then reloads the firewall, and restarts Docker because reloading flushes Docker's own runtime rules.
 
 ### Logstash
 
