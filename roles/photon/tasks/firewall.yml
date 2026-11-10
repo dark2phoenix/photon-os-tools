@@ -69,6 +69,6 @@
   ansible.builtin.debug:
     msg: >-
       /etc/systemd/scripts/ip4save has local changes and was left unchanged.
-      To replace it with this playbook's firewall (firewall_allowed_ports),
+      To replace it with the firewall from this playbook (firewall_allowed_ports),
       set force_reset_firewall: true.
   when: not (firewall_role_writes | bool)
