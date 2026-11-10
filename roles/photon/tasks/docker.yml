@@ -78,7 +78,7 @@
   ansible.builtin.debug:
     msg: >-
       /etc/docker/daemon.json already exists and was left unchanged.
-      To replace it with this playbook's docker_daemon_config,
+      To replace it with docker_daemon_config from this playbook,
       set force_reset_docker_config: true.
   when:
     - docker_daemon_json.stat.exists
