@@ -60,7 +60,18 @@ These tasks are not currently configurable - comment out any tasks you do not wa
 
 ### Logstash
 
-This task sets up syslog forwarding from this VM to a syslog server. It was tested specifically against VMware Log Insight.
+This task sets up syslog forwarding from this VM to a syslog server. It was tested specifically against VMware Log Insight and VCF Operations for Logs.
+
+syslog-ng reads the systemd journal directly (`system()`). Before 2026-11-09 the template read `/run/systemd/journal/syslog`, a socket Photon OS 5 never creates, so hosts forwarded only syslog-ng's own statistics line while the service showed active. After configuring, the role sends a `logger` test line and fails unless the remote destination's `written` counter rises, because a running service proves nothing.
+
+- syslog_remote_server: [DNS name] :: Where to send logs. Use a name, not an IP, so moving the server doesn't silently break forwarding.
+- syslog_remote_port: [514] :: Remote port.
+- syslog_remote_transport: [tcp] :: `tcp` or `udp`.
+- syslog_disk_buffer_bytes: [268435456] :: Disk buffer for the remote destination, so messages survive a server restart. `0` keeps the memory queue only.
+- syslog_local_file: [/var/log/messages] :: Local copy. Empty means no local file.
+- syslog_verify_delivery: [true] / syslog_verify_timeout: [15] :: The delivery check and how many seconds it waits.
+
+The first start with the journal source reads the whole journal, so expect a one-off burst into the server and the local file.
 
 ### PIP
 
