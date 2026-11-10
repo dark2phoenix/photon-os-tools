@@ -1,0 +1,20 @@
+# Managed by Ansible (photon-os-tools). Written from the role's firewall
+# settings (firewall_allowed_ports). The role keeps this file up to date while
+# this first line is present; remove it to take the file over by hand, or set
+# force_reset_firewall: true to have the role write it again.
+#
+# Based on Photon OS's stock ip4save, plus ping and the declared ports.
+*filter
+:INPUT DROP [0:0]
+:FORWARD DROP [0:0]
+:OUTPUT DROP [0:0]
+# Allow local-only connections
+-A INPUT -i lo -j ACCEPT
+-A INPUT -m conntrack --ctstate RELATED,ESTABLISHED -j ACCEPT
+-A INPUT -p icmp -j ACCEPT
+{% for spec in firewall_allowed_ports %}
+{%   set parts = (spec | string ~ '/tcp').split('/') %}
+-A INPUT -p {{ parts[1] }} -m {{ parts[1] }} --dport {{ parts[0] }} -j ACCEPT
+{% endfor %}
+-A OUTPUT -j ACCEPT
+COMMIT
