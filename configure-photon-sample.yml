@@ -24,8 +24,6 @@
                 max-size: "10m"
                 max-file: "3"
               storage-driver: "overlay2"
-              storage-opts:
-                - "overlay2.override_kernel_check=true"
             tdnf_updatecache: yes
             tdnf_distrosync: no
             tdnf_additional_packages: []
@@ -54,8 +52,8 @@
               root certificate
               -----END CERTIFICATE-----
 
-            ssl_root_certificate_pem_filename: my_custom_root.pem    
+            ssl_root_certificate_pem_filename: my_custom_root.pem
 
-            users_root_pwd_no_expire: yes     
+            users_root_pwd_no_expire: yes
 
       when: ansible_facts['distribution'] == 'VMware Photon OS'
