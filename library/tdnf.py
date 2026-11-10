@@ -141,15 +141,51 @@ import re
 # Import module snippets.
 from ansible.module_utils.basic import AnsibleModule
 
+def nothing_to_do(stdout, stderr):
+    return 'Nothing to do' in (stdout or '') or 'Nothing to do' in (stderr or '')
+
+
+def is_installed(module, name):
+    """True if an installed package provides name (works for package names and provides)."""
+    rc, _, _ = module.run_command([RPM_PATH, '-q', '--whatprovides', name], check_rc=False)
+    return rc == 0
+
+
+def common_options(excludelist, disable_gpg_check, releasever, conf_file,
+                   enablerepolist=None, disablerepolist=None, security_severity=None):
+    opts = []
+    if excludelist:
+        opts += ['--exclude', ','.join(excludelist)]
+    if disable_gpg_check:
+        opts.append('--nogpgcheck')
+    if security_severity:
+        opts += ['--sec-severity', security_severity]
+    if releasever:
+        opts += ['--releasever', str(releasever)]
+    if conf_file:
+        opts += ['-c', conf_file]
+    for repo in enablerepolist or []:
+        opts.append('--enablerepo=%s' % repo)
+    for repo in disablerepolist or []:
+        opts.append('--disablerepo=%s' % repo)
+    return opts
+
+
 def update_package_db(module, exit):
-    cmd = "%s makecache" % (TDNF_PATH)
-    rc, stdout, stderr = module.run_command(cmd, check_rc=False)
+    # Refreshing metadata changes nothing on the system, but check mode
+    # promises no commands with side effects, so it is skipped there.
+    if module.check_mode:
+        if exit:
+            module.exit_json(changed=False, msg='check mode: package db not refreshed')
+        return False
+    rc, stdout, stderr = module.run_command([TDNF_PATH, 'makecache'], check_rc=False)
     if rc != 0:
         module.fail_json(msg="could not update package db", stdout=stdout, stderr=stderr)
     elif exit:
         module.exit_json(changed=True, msg='updated package db', stdout=stdout, stderr=stderr)
     else:
         return True
+
 
 def upgrade_packages(
     module,
@@ -158,32 +194,26 @@ def upgrade_packages(
     security_severity,
     releasever,
     conf_file):
-    cmd = "%s upgrade -y" % (TDNF_PATH)
-    if excludelist:
-        cmd = "%s --exclude %s" % (cmd, ",".join(excludelist))
-    if disable_gpg_check:
-        cmd = "%s --nogpgcheck" % cmd
-    if security_severity:
-        cmd = "%s --sec-severity %s" % (cmd, security_severity)
-    if releasever:
-        cmd = "%s --releasever %s" % (cmd, releasever)
-    if conf_file:
-        cmd = "%s -c %s" % (cmd, conf_file)
-
-    rc, stdout, stderr = module.run_command(cmd, check_rc=False)
+    opts = common_options(excludelist, disable_gpg_check, releasever, conf_file,
+                          security_severity=security_severity)
+    if module.check_mode:
+        # --assumeno resolves the transaction and then declines it
+        rc, stdout, stderr = module.run_command([TDNF_PATH, 'upgrade', '--assumeno'] + opts, check_rc=False)
+        changed = not nothing_to_do(stdout, stderr)
+        module.exit_json(changed=changed, msg='check mode: packages would be upgraded' if changed else 'check mode: already at latest',
+                         stdout=stdout, stderr=stderr)
+    rc, stdout, stderr = module.run_command([TDNF_PATH, 'upgrade', '-y'] + opts, check_rc=False)
     if rc != 0:
         module.fail_json(msg="failed to upgrade packages", stdout=stdout, stderr=stderr)
-    was_changed = True
-    end_message = "%s package(s) upgraded"
-    if 'Nothing to do' in stderr:
-        was_changed = False
-        end_message = "%s packages(s) already at latest"
-    module.exit_json(changed=was_changed, msg=end_message, stdout=stdout, stderr=stderr)
+    if nothing_to_do(stdout, stderr):
+        module.exit_json(changed=False, msg="packages already at latest", stdout=stdout, stderr=stderr)
+    module.exit_json(changed=True, msg="packages upgraded", stdout=stdout, stderr=stderr)
 
 
 def install_packages(
             module,
             pkglist,
+            state,
             enablerepolist,
             disablerepolist,
             excludelist,
@@ -191,41 +221,45 @@ def install_packages(
             installroot,
             releasever,
             conf_file):
-    packages = " ".join(pkglist)
-    cmd = "%s install -y" % (TDNF_PATH)
-    if excludelist:
-        cmd = "%s --exclude %s" % (cmd, ",".join(excludelist))
-    if disable_gpg_check:
-        cmd = "%s --nogpgcheck" % cmd
-    if releasever:
-        cmd = "%s --releasever %s" % (cmd, releasever)
-    if conf_file:
-        cmd = "%s -c %s" % (cmd, conf_file)
-    if enablerepolist:
-        for repo in enablerepolist:
-            cmd = "%s --enablerepo=%s" % (cmd, repo)
-    if disablerepolist:
-        for repo in disablerepolist:
-            cmd = "%s --disablerepo=%s" % (cmd, repo)
-    cmd = "%s %s" % (cmd, packages)
-    rc, stdout, stderr = module.run_command(cmd, check_rc=False)
+    """state 'present' installs only missing packages and never upgrades an
+    installed one; state 'latest' installs missing packages and upgrades the
+    rest (tdnf install upgrades an installed package when a newer one exists)."""
+    opts = common_options(excludelist, disable_gpg_check, releasever, conf_file,
+                          enablerepolist, disablerepolist)
+    if state == 'present':
+        targets = [name for name in pkglist if not is_installed(module, name)]
+        if not targets:
+            module.exit_json(changed=False, msg="%s already installed" % " ".join(pkglist))
+    else:
+        targets = list(pkglist)
+
+    if module.check_mode:
+        if state == 'present':
+            module.exit_json(changed=True, msg="check mode: would install %s" % " ".join(targets))
+        rc, stdout, stderr = module.run_command([TDNF_PATH, 'install', '--assumeno'] + opts + targets, check_rc=False)
+        changed = not nothing_to_do(stdout, stderr)
+        module.exit_json(changed=changed,
+                         msg=("check mode: would install or upgrade %s" if changed else "check mode: %s already at latest") % " ".join(targets),
+                         stdout=stdout, stderr=stderr)
+
+    rc, stdout, stderr = module.run_command([TDNF_PATH, 'install', '-y'] + opts + targets, check_rc=False)
     if rc != 0:
-        module.fail_json(msg="failed to install %s" % (packages), stdout=stdout, stderr=stderr)
-    was_changed = True
-    end_message = "installed %s package(s)"
-    if 'Nothing to do' in stderr:
-        was_changed = False
-        end_message = "%s packages(s) already installed"
-    module.exit_json(changed=was_changed, msg=end_message % (packages), stdout=stdout, stderr=stderr)
+        module.fail_json(msg="failed to install %s" % " ".join(targets), stdout=stdout, stderr=stderr)
+    if nothing_to_do(stdout, stderr):
+        module.exit_json(changed=False, msg="%s already at latest" % " ".join(targets), stdout=stdout, stderr=stderr)
+    module.exit_json(changed=True, msg="installed or upgraded %s" % " ".join(targets), stdout=stdout, stderr=stderr)
 
 
 def remove_packages(module, pkglist):
-    packages = " ".join(pkglist)
-    cmd = "%s remove -y %s" % (TDNF_PATH, packages)
-    rc, stdout, stderr = module.run_command(cmd, check_rc=False)
+    targets = [name for name in pkglist if is_installed(module, name)]
+    if not targets:
+        module.exit_json(changed=False, msg="%s not installed" % " ".join(pkglist))
+    if module.check_mode:
+        module.exit_json(changed=True, msg="check mode: would remove %s" % " ".join(targets))
+    rc, stdout, stderr = module.run_command([TDNF_PATH, 'remove', '-y'] + targets, check_rc=False)
     if rc != 0:
-        module.fail_json(msg="failed to remove %s package(s)" % (packages), stdout=stdout, stderr=stderr)
-    module.exit_json(changed=True, msg="removed %s package(s)" % (packages), stdout=stdout, stderr=stderr)
+        module.fail_json(msg="failed to remove %s package(s)" % " ".join(targets), stdout=stdout, stderr=stderr)
+    module.exit_json(changed=True, msg="removed %s package(s)" % " ".join(targets), stdout=stdout, stderr=stderr)
 
 def convert_to_list(input_list):
     if input_list is None:
@@ -263,8 +297,9 @@ def main():
     # Set LANG env since we parse stdout
     module.run_command_environ_update = dict(LANG='C', LC_ALL='C', LC_MESSAGES='C', LC_CTYPE='C')
 
-    global TDNF_PATH
+    global TDNF_PATH, RPM_PATH
     TDNF_PATH = module.get_bin_path('tdnf', required=True)
+    RPM_PATH = module.get_bin_path('rpm', required=True)
 
     p = module.params
 
@@ -273,10 +308,10 @@ def main():
     disablerepolist = convert_to_list(p['disablerepo'])
     excludelist = convert_to_list(p['exclude'])
 
-    # normalize the state parameter
-    if p['state'] in ['present', 'installed', 'latest']:
+    # normalize the state parameter ('latest' stays distinct: it upgrades)
+    if p['state'] == 'installed':
         p['state'] = 'present'
-    if p['state'] in ['absent', 'removed']:
+    if p['state'] == 'removed':
         p['state'] = 'absent'
 
     if p['update_cache']:
@@ -295,6 +330,7 @@ def main():
         install_packages(
             module,
             pkglist,
+            p['state'],
             enablerepolist,
             disablerepolist,
             excludelist,

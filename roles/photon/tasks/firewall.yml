@@ -1,0 +1,74 @@
+#
+# Firewall: Photon restores /etc/systemd/scripts/ip4save at boot
+# (iptables.service). The role writes that file only when it is
+#   - still Photon's stock file (a new host),
+#   - already the role's own file (first line is the "Managed by Ansible" marker), or
+#   - force_reset_firewall is true.
+# Any other ip4save (hand-edited, or maintained by another tool) is left alone.
+#
+---
+- name: Install the iptables package
+  tdnf:
+    name: iptables
+    state: present
+
+- name: Check whether ip4save still matches the iptables package
+  ansible.builtin.command: rpm -V iptables
+  register: firewall_rpm_verify
+  changed_when: false
+  failed_when: false
+  check_mode: false
+
+- name: Check whether ip4save is the role's own file
+  ansible.builtin.command: head -n 1 /etc/systemd/scripts/ip4save
+  register: firewall_ip4save_head
+  changed_when: false
+  failed_when: false
+  check_mode: false
+
+- name: Decide whether the role writes the firewall
+  ansible.builtin.set_fact:
+    firewall_role_writes: >-
+      {{ (force_reset_firewall | bool)
+         or ('/etc/systemd/scripts/ip4save' not in firewall_rpm_verify.stdout)
+         or (firewall_ip4save_head.stdout is search('Managed by Ansible \(photon-os-tools\)')) }}
+
+# The written firewall drops everything not listed, so a list without SSH
+# would cut off remote access.
+- name: Refuse to write a firewall that blocks SSH
+  ansible.builtin.assert:
+    that:
+      - firewall_allowed_ports | map('string') | select('match', '^22(/tcp)?$') | list | length > 0
+    fail_msg: >-
+      firewall_allowed_ports has no 22/tcp, so the firewall the role is about to
+      write would block SSH. Add 22/tcp to firewall_allowed_ports.
+    quiet: true
+  when: firewall_role_writes | bool
+
+- name: Write the role's firewall rules
+  ansible.builtin.template:
+    src: ip4save.j2
+    dest: /etc/systemd/scripts/ip4save
+    owner: root
+    group: root
+    mode: "0644"
+    backup: true
+  register: firewall_ip4save
+  when: firewall_role_writes | bool
+
+# iptables.service flushes every table before loading ip4save, which also
+# removes the chains Docker creates at runtime, so Docker is restarted after.
+- name: Load the new firewall rules
+  ansible.builtin.systemd_service:
+    name: iptables
+    state: restarted
+  when: firewall_ip4save is changed
+  notify: restart docker
+
+- name: Report that the firewall was left unchanged
+  ansible.builtin.debug:
+    msg: >-
+      /etc/systemd/scripts/ip4save has local changes and was left unchanged.
+      To replace it with this playbook's firewall (firewall_allowed_ports),
+      set force_reset_firewall: true.
+  when: not (firewall_role_writes | bool)
