@@ -125,3 +125,11 @@ This task sets up proper NTP time for the OS using `systemd-timesync` and set th
 This task sets up some initial configuration for users in the OS including setting up ssh keys for users and enabling the root user
 
 Detailed documentation about the photon role can be found in the Role [README](/roles/photon/README.md)
+
+## Secret scan
+
+This repository is public. SSH keys of any kind (public or private), certificates and passwords never go in it; a host's real keys and CA belong in its own `configure-*.yml`, which is gitignored. The `secret-scan` workflow runs [gitleaks](https://github.com/gitleaks/gitleaks) over the full history on every push and pull request, with gitleaks' default rules plus the SSH-key and certificate rules in `.gitleaks.toml`. Placeholders such as `ssh-rsa AAAA...your-public-key...` or a `root certificate` line pass. To check before pushing:
+
+```bash
+gitleaks git . --config .gitleaks.toml --redact
+```
